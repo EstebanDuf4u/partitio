@@ -87,6 +87,7 @@ function SignUp() {
         return
       }
 
+      alert(`Bienvenue ${data.user.firstName} ${data.user.lastName}`)
       setForm(initialForm)
       setSubmitted(false)
       setStatus({ type: 'success', message: 'Compte cree avec succes.' })
