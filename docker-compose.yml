@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: partitio
+      POSTGRES_USER: partitio
+      POSTGRES_PASSWORD: partitio
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U partitio -d partitio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  flyway:
+    image: flyway/flyway:11-alpine
+    command: -connectRetries=60 -locations=filesystem:/flyway/migrations migrate
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/partitio
+      FLYWAY_USER: partitio
+      FLYWAY_PASSWORD: partitio
+    volumes:
+      - ./db/migrations:/flyway/migrations:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgres://partitio:partitio@postgres:5432/partitio
+    depends_on:
+      flyway:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./partitio
+    depends_on:
+      - backend
+    ports:
+      - "8081:8080"
+
+volumes:
+  postgres_data:

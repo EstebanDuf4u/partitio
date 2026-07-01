@@ -13,6 +13,8 @@ const initialForm = {
 function SignUp() {
   const [form, setForm] = useState(initialForm)
   const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState({ type: '', message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const errors = useMemo(() => {
     const nextErrors = {}
@@ -47,24 +49,52 @@ function SignUp() {
   function updateField(event) {
     const { name, value, type, checked } = event.target
 
+    setStatus({ type: '', message: '' })
     setForm((currentForm) => ({
       ...currentForm,
       [name]: type === 'checkbox' ? checked : value,
     }))
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
     setSubmitted(true)
+    setStatus({ type: '', message: '' })
 
     if (!isValid) return
 
-    console.log('Inscription prete a envoyer', {
-      firstName: form.firstName,
-      lastName: form.lastName,
-      email: form.email,
-      terms: form.terms,
-    })
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          password: form.password,
+          terms: form.terms,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setStatus({ type: 'error', message: data.error || "L'inscription a echoue." })
+        return
+      }
+
+      setForm(initialForm)
+      setSubmitted(false)
+      setStatus({ type: 'success', message: 'Compte cree avec succes.' })
+    } catch {
+      setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   function fieldError(name) {
@@ -168,8 +198,14 @@ function SignUp() {
           </label>
           {fieldError('terms') && <small className="terms-error">{fieldError('terms')}</small>}
 
-          <button className="signup-submit" type="submit">
-            S'inscrire
+          {status.message && (
+            <p className={`signup-status signup-status--${status.type}`} role="status">
+              {status.message}
+            </p>
+          )}
+
+          <button className="signup-submit" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Inscription...' : "S'inscrire"}
           </button>
         </form>
       </section>
