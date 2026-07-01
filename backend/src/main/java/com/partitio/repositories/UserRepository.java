@@ -29,7 +29,6 @@ public class UserRepository {
         passwordHash,
         acceptedTerms);
   }
-
   public Optional<User> findByEmail(String email) {
     var users = jdbcTemplate.query(
         """
@@ -43,6 +42,20 @@ public class UserRepository {
     return users.stream().findFirst();
   }
 
+public Optional<User> findById(long id) {
+  var users = jdbcTemplate.query(
+      """
+          SELECT id, first_name, last_name, email, password_hash, created_at
+          FROM users
+          WHERE id = ?
+          """,
+      this::mapUser,
+      id);
+
+  return users.stream().findFirst();
+}
+
+
   private User mapUser(ResultSet resultSet, int rowNumber) throws SQLException {
     return new User(
         resultSet.getLong("id"),
@@ -52,4 +65,6 @@ public class UserRepository {
         resultSet.getString("password_hash"),
         resultSet.getObject("created_at", java.time.OffsetDateTime.class));
   }
+
+
 }
