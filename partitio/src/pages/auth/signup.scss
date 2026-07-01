@@ -186,6 +186,27 @@ $danger: #c4362e;
   font-weight: 700;
 }
 
+.signup-status {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 800;
+
+  &--success {
+    border: 1px solid rgba($green-800, 0.24);
+    color: $green-900;
+    background: rgba($green-800, 0.08);
+  }
+
+  &--error {
+    border: 1px solid rgba($danger, 0.24);
+    color: $danger;
+    background: rgba($danger, 0.08);
+  }
+}
+
 .signup-submit {
   min-height: 50px;
   border: 0;
@@ -199,6 +220,11 @@ $danger: #c4362e;
 
   &:hover {
     background: $green-900;
+  }
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.72;
   }
 
   &:focus-visible {
