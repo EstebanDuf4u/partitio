@@ -8,5 +8,8 @@ public record User(
     String lastName,
     String email,
     String passwordHash,
+    boolean emailVerified,
+    String emailVerificationToken,
+    OffsetDateTime emailVerificationExpiresAt,
     OffsetDateTime createdAt) {
 }

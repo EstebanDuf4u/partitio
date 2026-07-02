@@ -13,6 +13,7 @@ public class WebConfig {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**").allowedMethods("GET", "POST", "OPTIONS").allowedOrigins("*");
+        registry.addMapping("/api/logout").allowedMethods("GET", "POST", "OPTIONS").allowedOrigins("*");
       }
     };
   }

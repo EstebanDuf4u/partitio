@@ -45,6 +45,11 @@ public class LoginController {
     return userRepository.findByEmail(request.email())
         .filter(user -> passwordEncoder.matches(request.password(), user.passwordHash()))
         .<ResponseEntity<?>>map(user -> {
+          if (!user.emailVerified()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse("Merci de valider ton email avant de te connecter."));
+          }
+
           String token = jwtService.generateToken(user);
 
           ResponseCookie cookie = ResponseCookie.from(jwtCookieName, token)

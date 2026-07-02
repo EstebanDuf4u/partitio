@@ -14,6 +14,7 @@ function SignUp() {
   const [form, setForm] = useState(initialForm)
   const [submitted, setSubmitted] = useState(false)
   const [status, setStatus] = useState({ type: '', message: '' })
+  const [verificationLink, setVerificationLink] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const errors = useMemo(() => {
@@ -50,6 +51,7 @@ function SignUp() {
     const { name, value, type, checked } = event.target
 
     setStatus({ type: '', message: '' })
+    setVerificationLink('')
     setForm((currentForm) => ({
       ...currentForm,
       [name]: type === 'checkbox' ? checked : value,
@@ -60,6 +62,7 @@ function SignUp() {
     event.preventDefault()
     setSubmitted(true)
     setStatus({ type: '', message: '' })
+    setVerificationLink('')
 
     if (!isValid) return
 
@@ -88,9 +91,10 @@ function SignUp() {
       }
 
       alert(`Bienvenue ${data.user.firstName} ${data.user.lastName}`)
+      setVerificationLink(data.verificationLink || '')
       setForm(initialForm)
       setSubmitted(false)
-      setStatus({ type: 'success', message: 'Compte cree avec succes.' })
+      setStatus({ type: 'success', message: 'Compte cree. Valide ton email pour te connecter.' })
     } catch {
       setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
     } finally {
@@ -203,6 +207,12 @@ function SignUp() {
             <p className={`signup-status signup-status--${status.type}`} role="status">
               {status.message}
             </p>
+          )}
+
+          {verificationLink && (
+            <a className="signup-status signup-status--success" href={verificationLink}>
+              Valider mon email
+            </a>
           )}
 
           <button className="signup-submit" type="submit" disabled={isSubmitting}>
