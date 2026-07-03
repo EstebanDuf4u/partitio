@@ -1,0 +1,92 @@
+$light-green: #e6ede1;
+$green-800: #185947;
+$green-800-svg: invert(24%) sepia(84%) saturate(349%) hue-rotate(113deg) brightness(95%) contrast(93%);
+
+$light-orange: #ffedd2;
+$orange: #fd8219;
+$orange-svg: invert(54%) sepia(86%) saturate(1897%) hue-rotate(349deg) brightness(104%) contrast(98%);
+
+$light-purple: #efe7f2;
+$purple: #552bb7;
+$purple-svg: invert(16%) sepia(62%) saturate(5197%) hue-rotate(257deg) brightness(81%) contrast(91%);
+
+$light-blue: #dee7f2;
+$blue: #0f5ad7;
+$blue-svg: invert(36%) sepia(85%) saturate(7493%) hue-rotate(215deg) brightness(92%) contrast(88%);
+
+$muted: #6f7b75;
+
+.ensemble {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
+
+    height: fit-content;
+    width: 100%;
+    margin: 0 15px;
+
+    .ensembleImage {
+
+        border-radius: 100px;
+        padding: 15px;
+        
+        height: fit-content;
+        width: fit-content;
+
+        img {
+            height: 48px;
+            width: 48px;
+        }
+    }
+}
+
+.ensembleImage.green {
+    background-color: $light-green;
+    img {
+        filter: $green-800-svg;
+    }
+}
+
+.ensembleImage.orange {
+    background-color: $light-orange;
+    img {
+        filter: $orange-svg;
+    }
+}
+
+.ensembleImage.purple {
+    background-color: $light-purple;
+    img {
+        filter: $purple-svg;
+    }
+}
+
+.ensembleImage.blue {
+    background-color: $light-blue;
+    img {
+        filter: $blue-svg;
+    }
+}
+
+.ensembleTexte {
+    display: flex;
+    flex-direction: column;
+
+    height: fit-content;
+    width: fit-content;
+
+    p {
+        font-family: "Inter";
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1;
+        color: $muted;
+    }
+
+    #ensembleName {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+}

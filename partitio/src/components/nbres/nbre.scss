@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+$green-950: #0f3d31;
+$green-900: #123f34;
+$green-900-svg: invert(15%) sepia(11%) saturate(4612%) hue-rotate(123deg) brightness(95%) contrast(86%);
+$cream: #f7f2ea;
+$cream-svg: invert(94%) sepia(16%) saturate(391%) hue-rotate(311deg) brightness(106%) contrast(94%);
+$text: #17372f;
+$muted: #6f7b75;
+$muted-svg: invert(48%) sepia(9%) saturate(344%) hue-rotate(97deg) brightness(95%) contrast(87%);
+
+$paper: #fffaf2;
+$border: #e8dccb;
+
+$light-green: #e6ede1;
+$green-800: #185947;
+$green-800-svg: invert(24%) sepia(84%) saturate(349%) hue-rotate(113deg) brightness(95%) contrast(93%);
+
+$light-orange: #ffedd2;
+$orange: #fd8219;
+$orange-svg: invert(54%) sepia(86%) saturate(1897%) hue-rotate(349deg) brightness(104%) contrast(98%);
+
+$light-purple: #efe7f2;
+$purple: #552bb7;
+$purple-svg: invert(16%) sepia(62%) saturate(5197%) hue-rotate(257deg) brightness(81%) contrast(91%);
+
+$light-blue: #dee7f2;
+$blue: #0f5ad7;
+$blue-svg: invert(36%) sepia(85%) saturate(7493%) hue-rotate(215deg) brightness(92%) contrast(88%);
+
+
+.nbreDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    background-color: $paper;
+    border: 2px solid $border;
+    border-radius: 15px;
+    
+    width: 100%;
+    max-width: 300px;
+    height: 100%;
+    max-height: 120px;
+
+    padding: 10px;
+}
+
+.image {
+    padding: 25px;
+
+    border-radius: 200px;
+    width: fit-content;
+    height: fit-content;
+
+    img {
+        height: 48px;
+    }
+}
+
+.image.green {
+    background-color: $light-green;
+
+    img {
+        filter: $green-800-svg;
+    }
+}
+
+.image.orange {
+    background-color: $light-orange;
+
+    img {
+        filter: $orange-svg;
+    }
+}
+.image.purple {
+    background-color: $light-purple;
+
+    img {
+        filter: $purple-svg;
+    }
+}
+.image.blue {
+    background-color: $light-blue;
+
+    img {
+        filter: $blue-svg;
+    }
+}
+
+.nombre {
+    font-family: "Inter";
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    color: $text;
+    margin: 0;
+}
+
+.title {
+    font-family: "Inter";
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1;
+    color: $text;
+    margin: 0;
+}
+
+.text a {
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    color: $green-800;
+    margin: 0;
+    text-decoration: none;
+}

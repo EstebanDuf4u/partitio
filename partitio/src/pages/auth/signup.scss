@@ -46,7 +46,7 @@ $danger: #c4362e;
 
   strong {
     color: #fff;
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: var(--heading);
     font-size: 36px;
     font-weight: 500;
     line-height: 1;
