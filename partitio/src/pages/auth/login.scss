@@ -233,6 +233,30 @@ $danger: #c4362e;
   }
 }
 
+.auth-switch {
+  margin: 0;
+  color: $muted;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+
+  a {
+    color: $green-800;
+    font-weight: 900;
+    text-decoration: none;
+
+    &:hover {
+      color: $green-900;
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgba($green-800, 0.18);
+      outline-offset: 3px;
+    }
+  }
+}
+
 @media (max-width: 760px) {
   .connexion-page {
     grid-template-columns: 1fr;

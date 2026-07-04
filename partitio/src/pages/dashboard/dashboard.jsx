@@ -1,17 +1,55 @@
 import "./dashboard.scss";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LeftPanel from "../../components/leftPanel/leftPanel";
 import Nbre from "../../components/nbres/nbre";
 import Morceau from "../../components/morceau/morceau";
 import Ensemble from "../../components/ensemble/ensemble";
 
 function Dashboard() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const response = await fetch("/api/me", {
+                    credentials: "same-origin",
+                });
+
+                if (!response.ok) {
+                    navigate("/login", { replace: true });
+                    return;
+                }
+
+                const data = await response.json();
+                setUser(data.user);
+            } catch {
+                navigate("/login", { replace: true });
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadUser();
+    }, [navigate]);
+
+    if (isLoading) {
+        return null;
+    }
+
+    if (!user) {
+        return null;
+    }
+
     return (
         <div className="all">
             <LeftPanel />
             <div className="panneauDroite">
                 <div className="top">
                     <div className="texte">
-                        <p className="textePrenom">Bonjour Prenom!</p>
+                        <p className="textePrenom">Bonjour {user.firstName} {user.lastName}!</p>
                         <p>Voici un aperçu de votre activité.</p>
                     </div>
                     <div className="recherche">
