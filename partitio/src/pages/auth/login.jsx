@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './login.scss'
 
 const initialForm = {
@@ -7,6 +8,7 @@ const initialForm = {
 }
 
 function Login() {
+    const navigate = useNavigate()
     const [form, setForm] = useState(initialForm)
     const [submitted, setSubmitted] = useState(false)
     const [status, setStatus] = useState({ type: '', message: '' })
@@ -52,6 +54,7 @@ function Login() {
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
+                credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -68,10 +71,10 @@ function Login() {
                 return
             }
 
-            alert(`Bienvenue ${data.user.firstName} ${data.user.lastName}`)
             setForm(initialForm)
             setSubmitted(false)
             setStatus({ type: 'success', message: 'Connexion reussie.' })
+            navigate('/dashboard', { replace: true })
         } catch {
             setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
         } finally {
@@ -141,6 +144,10 @@ function Login() {
                     <button className="connexion-submit" type="submit" disabled={isSubmitting}>
                         {isSubmitting ? 'Connexion...' : 'Se connecter'}
                     </button>
+
+                    <p className="auth-switch">
+                        Pas encore de compte ? <Link to="/signup">Creer un compte</Link>
+                    </p>
                 </form>
             </section>
         </main>

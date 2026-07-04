@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './signup.scss'
 
 const initialForm = {
@@ -218,6 +219,10 @@ function SignUp() {
           <button className="signup-submit" type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Inscription...' : "S'inscrire"}
           </button>
+
+          <p className="auth-switch">
+            Deja un compte ? <Link to="/login">Se connecter</Link>
+          </p>
         </form>
       </section>
     </main>
