@@ -5,7 +5,10 @@ import com.partitio.dtos.SignupRequest;
 import com.partitio.dtos.UserResponse;
 import com.partitio.repositories.UserRepository;
 import jakarta.validation.Valid;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,14 +36,23 @@ public class SignupController {
     }
 
     try {
+      var emailVerificationToken = UUID.randomUUID().toString();
+      var emailVerificationExpiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(24);
+
       var user = userRepository.create(
           request.firstName(),
           request.lastName(),
           request.email(),
           passwordEncoder.encode(request.password()),
-          request.terms());
+          request.terms(),
+          emailVerificationToken,
+          emailVerificationExpiresAt);
 
-      return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("user", UserResponse.from(user)));
+      var verificationLink = "http://localhost:8081/api/verify-email?token=" + emailVerificationToken;
+
+      return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+          "user", UserResponse.from(user),
+          "verificationLink", verificationLink));
     } catch (DuplicateKeyException error) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
           .body(new ErrorResponse("Cette adresse mail est deja utilisee."));

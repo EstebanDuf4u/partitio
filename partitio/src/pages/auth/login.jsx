@@ -9,6 +9,8 @@ const initialForm = {
 function Login() {
     const [form, setForm] = useState(initialForm)
     const [submitted, setSubmitted] = useState(false)
+    const [status, setStatus] = useState({ type: '', message: '' })
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const errors = useMemo(() => {
         const nextErrors = {}
@@ -31,17 +33,50 @@ function Login() {
     function updateField(event) {
         const { name, value, type, checked } = event.target
 
+        setStatus({ type: '', message: '' })
         setForm((currentForm) => ({
             ...currentForm,
             [name]: type === 'checkbox' ? checked : value,
         }))
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
         setSubmitted(true)
+        setStatus({ type: '', message: '' })
 
         if (!isValid) return
+
+        setIsSubmitting(true)
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: form.email,
+                    password: form.password,
+                }),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                setStatus({ type: 'error', message: data.error || 'Connexion impossible.' })
+                return
+            }
+
+            alert(`Bienvenue ${data.user.firstName} ${data.user.lastName}`)
+            setForm(initialForm)
+            setSubmitted(false)
+            setStatus({ type: 'success', message: 'Connexion reussie.' })
+        } catch {
+            setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     function fieldError(name) {
@@ -97,8 +132,14 @@ function Login() {
                         Captcha à ajouter plus tard
                     </div>
 
-                    <button className="connexion-submit" type="submit">
-                        Se connecter
+                    {status.message && (
+                        <p className={`connexion-status connexion-status--${status.type}`} role="status">
+                            {status.message}
+                        </p>
+                    )}
+
+                    <button className="connexion-submit" type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Connexion...' : 'Se connecter'}
                     </button>
                 </form>
             </section>
