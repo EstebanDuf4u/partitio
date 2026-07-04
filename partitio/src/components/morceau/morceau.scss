@@ -1,0 +1,76 @@
+$border: #e8dccb;
+$text: #17372f;
+$muted: #6f7b75;
+
+.morceau {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 15px;
+
+    width: 100%;
+    max-width: 1000px;
+    height: fit-content;
+
+    .gauche {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 15px;
+
+        width: fit-content;
+        height: fit-content;
+
+        img {
+            height: 96px;
+            width: 96px;
+            border: 2px solid $border;
+        }
+
+        .morceauTitre {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+
+            width: fit-content;
+            height: 100%;
+
+            p {
+                font-family: "Inter";
+                font-weight: 400;
+                font-size: 24px;
+                line-height: 1;
+                color: $muted;
+            }
+            
+            #title {
+                color: $text;
+                font-size: 36px;
+            }
+        }
+    }
+
+    .droite {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 15px;
+
+        width: fit-content;
+        height: fit-content;
+
+        p {
+            font-family: "Inter";
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1;
+            color: $muted;
+        }
+
+        img {
+            width: 16px;
+        }
+    }
+}
