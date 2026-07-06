@@ -1,6 +1,7 @@
 import "./leftPanel.scss"
+
 import Button from "../button/button";
-import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 function LeftPanel() {
     return (
@@ -14,10 +15,10 @@ function LeftPanel() {
                     <p>Gérer vos partitions en toute harmonie</p>
                 </div>
                 <div className="btnDiv">
-                    <Button name="Tableau de bord" imageSrc={"/house.svg"} />
-                    <Button name="Morceaux" imageSrc={"/music.svg"} />
-                    <Button name="Ensembles" imageSrc={"/group.svg"} />
-                    <Button name="Documents" imageSrc={"/doc.svg"} />
+                    <Button name="Tableau de bord" imageSrc={"/house.svg"} path="/dashboard"/>
+                    <Button name="Morceaux" imageSrc={"/music.svg"} path="/piece"/>
+                    <Button name="Ensembles" imageSrc={"/group.svg"} path="/piece"/>
+                    <Button name="Documents" imageSrc={"/doc.svg"} path="/piece"/>
                 </div>
                 <div className="texteAdminDiv">
                     <div className="texteAdmin">
@@ -26,17 +27,17 @@ function LeftPanel() {
                     <div class="divider"></div>
                 </div>
                 <div className="btnDiv">
-                    <Button name="Utilisateurs" imageSrc={"/group.svg"} />
-                    <Button name="Rôles" imageSrc={"/add-user.svg"} />
+                    <Button name="Utilisateurs" imageSrc={"/group.svg"} path="/piece"/>
+                    <Button name="Rôles" imageSrc={"/add-user.svg"} path="/piece"/>
                 </div>
             </div>
-            <div className="btnProfil">
+            <NavLink to="/piece" className="btnProfil">
                 <img src="/avatar.svg" alt="avatar" />
                 <div className="profilText">
                     <p className="prenomNom">Prenom Nom</p>
                     <p className="typeVoix">Type de voix</p>
                 </div>
-            </div>
+            </NavLink>
         </div>
     )
 }
