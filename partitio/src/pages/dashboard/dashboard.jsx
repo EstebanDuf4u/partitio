@@ -5,24 +5,58 @@ import Nbre from "../../components/nbres/nbre";
 import Morceau from "../../components/morceau/morceau";
 import Ensemble from "../../components/ensemble/ensemble";
 
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function Dashboard() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState("");
 
-    const morceaux = [
-        <Morceau title="Hallelujah" author="Leonard Cohen" path="/hallelujah-cover.jpg" modifDate="02/07/2026" />,
-        <Morceau title="Hier Encore" author="Charles Aznavour" path="/hallelujah-cover.jpg" modifDate="02/07/2026" />,
-        <Morceau title="I'm Done" author="Rutra" path="/hallelujah-cover.jpg" modifDate="02/07/2026" />,
-        <Morceau title="Freestyle du sale" author="Lorenzo" path="/hallelujah-cover.jpg" modifDate="02/07/2026" />,
-        <Morceau title="Parisienne" author="Gims" path="/hallelujah-cover.jpg" modifDate="02/07/2026" />
-    ];
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const response = await fetch("/api/me", {
+                    credentials: "same-origin",
+                });
+
+                if (!response.ok) {
+                    navigate("/login", { replace: true });
+                    return;
+                }
+
+                const data = await response.json();
+                setUser(data.user);
+            } catch {
+                navigate("/login", { replace: true });
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadUser();
+    }, [navigate]);
 
     useEffect(() => {
         console.log(search);
-
     }, [search]);
+
+    if (isLoading) {
+        return null;
+    }
+
+    if (!user) {
+        return null;
+    }
+
+    const morceaux = [
+        { title: "Hallelujah", author: "Leonard Cohen", path: "/hallelujah-cover.jpg", modifDate: "02/07/2026" },
+        { title: "Hier Encore", author: "Charles Aznavour", path: "/hallelujah-cover.jpg", modifDate: "02/07/2026" },
+        { title: "I'm Done", author: "Rutra", path: "/hallelujah-cover.jpg", modifDate: "02/07/2026" },
+        { title: "Freestyle du sale", author: "Lorenzo", path: "/hallelujah-cover.jpg", modifDate: "02/07/2026" },
+        { title: "Parisienne", author: "Gims", path: "/hallelujah-cover.jpg", modifDate: "02/07/2026" }
+    ];
 
     return (
         <div className="all">
@@ -30,7 +64,7 @@ function Dashboard() {
             <div className="panneauDroite">
                 <div className="top">
                     <div className="texte">
-                        <p className="textePrenom">Bonjour {user.firstName} {user.lastName}!</p>
+                        <p className="textePrenom">Bonjour {user.firstName}!</p>
                         <p>Voici un aperçu de votre activité.</p>
                     </div>
                     <div className="recherche">
@@ -52,7 +86,7 @@ function Dashboard() {
                         </div>
                         <hr />
                         {morceaux.map((morceau) => (
-                            <p key={morceau}>{morceau}</p>
+                            <Morceau key={`${morceau.title}-${morceau.author}`} {...morceau} />
                         ))}
                     </div>
                     <div className="mesEnsembles">
