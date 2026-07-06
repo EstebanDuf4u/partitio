@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './login.scss'
 
 const initialForm = {
@@ -7,8 +8,11 @@ const initialForm = {
 }
 
 function Login() {
+    const navigate = useNavigate()
     const [form, setForm] = useState(initialForm)
     const [submitted, setSubmitted] = useState(false)
+    const [status, setStatus] = useState({ type: '', message: '' })
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const errors = useMemo(() => {
         const nextErrors = {}
@@ -31,17 +35,51 @@ function Login() {
     function updateField(event) {
         const { name, value, type, checked } = event.target
 
+        setStatus({ type: '', message: '' })
         setForm((currentForm) => ({
             ...currentForm,
             [name]: type === 'checkbox' ? checked : value,
         }))
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
         setSubmitted(true)
+        setStatus({ type: '', message: '' })
 
         if (!isValid) return
+
+        setIsSubmitting(true)
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: form.email,
+                    password: form.password,
+                }),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                setStatus({ type: 'error', message: data.error || 'Connexion impossible.' })
+                return
+            }
+
+            setForm(initialForm)
+            setSubmitted(false)
+            setStatus({ type: 'success', message: 'Connexion reussie.' })
+            navigate('/dashboard', { replace: true })
+        } catch {
+            setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     function fieldError(name) {
@@ -97,9 +135,19 @@ function Login() {
                         Captcha à ajouter plus tard
                     </div>
 
-                    <button className="connexion-submit" type="submit">
-                        Se connecter
+                    {status.message && (
+                        <p className={`connexion-status connexion-status--${status.type}`} role="status">
+                            {status.message}
+                        </p>
+                    )}
+
+                    <button className="connexion-submit" type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Connexion...' : 'Se connecter'}
                     </button>
+
+                    <p className="auth-switch">
+                        Pas encore de compte ? <Link to="/signup">Creer un compte</Link>
+                    </p>
                 </form>
             </section>
         </main>

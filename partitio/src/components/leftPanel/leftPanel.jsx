@@ -24,7 +24,7 @@ function LeftPanel() {
                     <div className="texteAdmin">
                         <p>Administration</p>
                     </div>
-                    <div class="divider"></div>
+                    <div className="divider"></div>
                 </div>
                 <div className="btnDiv">
                     <Button name="Utilisateurs" imageSrc={"/group.svg"} path="/piece"/>
