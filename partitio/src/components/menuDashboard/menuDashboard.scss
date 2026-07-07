@@ -1,0 +1,28 @@
+$green-950: #0f3d31;
+$green-900: #123f34;
+
+$border: #e8dccb;
+$cream: #f7f2ea;
+
+$cream-svg: invert(94%) sepia(16%) saturate(391%) hue-rotate(311deg) brightness(106%) contrast(94%);
+$danger: #c4362e;
+$gold: #d49a20;
+$muted: #6f7b75;
+$muted-svg: invert(48%) sepia(9%) saturate(344%) hue-rotate(97deg) brightness(95%) contrast(87%);
+$paper: #fffaf2;
+$text: #17372f;
+
+.dots {
+    border-color: $border;
+    background-color: $cream;
+    
+    height: fit-content;
+    width: fit-content;
+
+    svg {
+        color: $muted;
+        width: 32px;
+        height: 32px;
+    }
+}
+

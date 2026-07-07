@@ -15,19 +15,15 @@ $border: #e8dccb;
 
 $light-green: #e6ede1;
 $green-800: #185947;
-$green-800-svg: invert(24%) sepia(84%) saturate(349%) hue-rotate(113deg) brightness(95%) contrast(93%);
 
 $light-orange: #ffedd2;
 $orange: #fd8219;
-$orange-svg: invert(54%) sepia(86%) saturate(1897%) hue-rotate(349deg) brightness(104%) contrast(98%);
 
 $light-purple: #efe7f2;
 $purple: #552bb7;
-$purple-svg: invert(16%) sepia(62%) saturate(5197%) hue-rotate(257deg) brightness(81%) contrast(91%);
 
 $light-blue: #dee7f2;
 $blue: #0f5ad7;
-$blue-svg: invert(36%) sepia(85%) saturate(7493%) hue-rotate(215deg) brightness(92%) contrast(88%);
 
 
 .nbreDiv {
@@ -54,38 +50,39 @@ $blue-svg: invert(36%) sepia(85%) saturate(7493%) hue-rotate(215deg) brightness(
     width: fit-content;
     height: fit-content;
 
-    img {
+    svg {
         height: 48px;
+        width: 48px;
     }
 }
 
 .image.green {
     background-color: $light-green;
 
-    img {
-        filter: $green-800-svg;
+    svg {
+        color: $green-800;
     }
 }
 
 .image.orange {
     background-color: $light-orange;
 
-    img {
-        filter: $orange-svg;
+    svg {
+        color: $orange;
     }
 }
 .image.purple {
     background-color: $light-purple;
 
-    img {
-        filter: $purple-svg;
+    svg {
+        color: $purple;
     }
 }
 .image.blue {
     background-color: $light-blue;
 
-    img {
-        filter: $blue-svg;
+    svg {
+        color: $blue;
     }
 }
 

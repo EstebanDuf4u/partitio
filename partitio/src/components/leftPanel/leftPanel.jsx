@@ -2,23 +2,24 @@ import "./leftPanel.scss"
 
 import Button from "../button/button";
 import { NavLink } from "react-router-dom";
+import { HouseIcon, MusicNoteIcon, UsersIcon, FileTextIcon, UserListIcon, UserPlusIcon } from "@phosphor-icons/react";
 
 function LeftPanel() {
     return (
         <div className="panneauGauche">
             <div className="group">
-                <div className="texte">
+                <NavLink className="texteLogo" to="/dashboard">
                     <div className="logo">
                         <img src="/logo.png" alt="logoPartitio" />
                         <p>Partitio</p>
                     </div>
                     <p>Gérer vos partitions en toute harmonie</p>
-                </div>
+                </NavLink>
                 <div className="btnDiv">
-                    <Button name="Tableau de bord" imageSrc={"/house.svg"} path="/dashboard"/>
-                    <Button name="Morceaux" imageSrc={"/music.svg"} path="/piece"/>
-                    <Button name="Ensembles" imageSrc={"/group.svg"} path="/piece"/>
-                    <Button name="Documents" imageSrc={"/doc.svg"} path="/piece"/>
+                    <Button name="Tableau de bord" image={<HouseIcon />} path="/dashboard"/>
+                    <Button name="Morceaux" image={<MusicNoteIcon />} path="/piece"/>
+                    <Button name="Documents" image={<FileTextIcon />} path="/piece"/>
+                    <Button name="Ensembles" image={<UsersIcon />} path="/piece"/>
                 </div>
                 <div className="texteAdminDiv">
                     <div className="texteAdmin">
@@ -27,8 +28,8 @@ function LeftPanel() {
                     <div className="divider"></div>
                 </div>
                 <div className="btnDiv">
-                    <Button name="Utilisateurs" imageSrc={"/group.svg"} path="/piece"/>
-                    <Button name="Rôles" imageSrc={"/add-user.svg"} path="/piece"/>
+                    <Button name="Utilisateurs" image={<UserListIcon />} path="/piece"/>
+                    <Button name="Rôles" image={<UserPlusIcon  />} path="/piece"/>
                 </div>
             </div>
             <NavLink to="/piece" className="btnProfil">
