@@ -67,7 +67,7 @@ function Dashboard() {
             <div className="panneauDroite">
                 <div className="top">
                     <div className="texte">
-                        <p className="textePrenom">Bonjour {user.firstName} {user.lastName}!</p>
+                        <p className="textePrenom">Bonjour {user.firstName}!</p>
                         <p>Voici un aperçu de votre activité.</p>
                     </div>
                     <div className="recherche">
