@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import "./nbre.scss"
 
-function Nbre({path, name, number, numberMonthly, link, color}) {
+function Nbre({image, name, number, numberMonthly, link, color}) {
     return (
         <div className="nbreDiv">
             <div className={`image ${color}`}>
-                <img src={path} alt={name} />
+                {image}
             </div>
             <div className="text">
                 <p className="nombre">{number}</p>

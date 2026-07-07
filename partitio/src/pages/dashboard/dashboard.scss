@@ -4,16 +4,13 @@
 $green-950: #0f3d31;
 $green-900: #123f34;
 $green-800: #185947;
-$green-800-svg: invert(24%) sepia(84%) saturate(349%) hue-rotate(113deg) brightness(95%) contrast(93%);
 $light-green: #e6ede1;
 
 $cream: #f7f2ea;
-$cream-svg: invert(94%) sepia(16%) saturate(391%) hue-rotate(311deg) brightness(106%) contrast(94%);
 $paper: #fffaf2;
 $gold: #d49a20;
 $text: #17372f;
 $muted: #6f7b75;
-$muted-svg: invert(48%) sepia(9%) saturate(344%) hue-rotate(97deg) brightness(95%) contrast(87%);
 $border: #e8dccb;
 $danger: #c4362e;
 
@@ -21,7 +18,7 @@ $danger: #c4362e;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    
+
     width: 100%;
     height: 100%;
 }
@@ -31,7 +28,7 @@ $danger: #c4362e;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    
+
     background-color: $cream;
 
     padding: 50px;
@@ -60,7 +57,7 @@ $danger: #c4362e;
             font-size: 36px;
             line-height: 1;
             color: $muted;
-            
+
         }
 
         .textePrenom {
@@ -71,34 +68,20 @@ $danger: #c4362e;
 
     .recherche {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         align-items: center;
         column-gap: 50px;
         width: 100%;
+    }
 
-        input[type=text] {
+    .searchInput {
+        width: 400px;
+
+        input {
+            height: 50px;
             background-color: $paper;
-            background-image: url("/search.svg");
-            // filter: $muted-svg;
-            background-position: 10px 10px;
-            background-repeat: no-repeat;
-            background-size: 32px;
-
-            padding: 5px;
-            padding-left: 50px;
-
-            border-radius: 10px;
             border: 2px solid $border;
-
-            width: 100%;
-            height: 100%;
-
-            max-width: 400px;
-            max-height: 50px;
-        }
-
-        img {
-            height: 32px;
+            border-radius: 10px;
         }
     }
 }
@@ -120,13 +103,14 @@ $danger: #c4362e;
     width: 100%;
     height: fit-content;
 
-    .morceauxRecents, .mesEnsembles {
+    .morceauxRecents,
+    .mesEnsembles {
         display: flex;
         flex-direction: column;
-        
+
         border: 2px solid $border;
         border-radius: 20px;
-        
+
         background-color: $paper;
 
         padding: 10px;
@@ -153,7 +137,7 @@ $danger: #c4362e;
                 color: $muted;
                 line-height: 1;
             }
-            
+
             a {
                 font-family: "Inter";
                 font-size: 24px;
@@ -175,47 +159,5 @@ $danger: #c4362e;
         max-width: 500px;
         height: 100%;
         justify-content: space-between;
-    }
-
-    .boutonBottom {
-        display: flex;
-        flex-direction: row;
-        column-gap: 10px;
-
-        align-items: center;
-        align-self: center;
-        justify-content: center;
-        
-        padding: 10px;
-
-        height: fit-content;
-        width: fit-content;
-        
-        background-color: $light-green;
-        border: 2px solid $green-800;
-        border-radius: 10px;
-
-        cursor: pointer;
-        
-        img {
-          height: 24px;
-          width: 24px;
-          
-          filter: $green-800-svg;
-        }
-
-        .boutonTexte {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            p {
-                font-family: "Inter";
-                font-size: 24px;
-                font-weight: 700;
-                line-height: 1;
-                color: $green-800;
-            }
-        }
     }
 }

@@ -39,12 +39,17 @@ $danger: #c4362e;
     height: fit-content;
 }
 
-.texte {
+.texteLogo {
     display: flex;
     flex-direction: column;
     row-gap: 25px;
 
     height: fit-content;
+
+    cursor: pointer;
+
+    text-decoration: none;
+    color: inherit;
 
     p {
         color: $muted;

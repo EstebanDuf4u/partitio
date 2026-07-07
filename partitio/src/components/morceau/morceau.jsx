@@ -1,4 +1,5 @@
 import "./morceau.scss";
+import { DotsThreeIcon } from "@phosphor-icons/react";
 
 function Morceau({title, author, path, modifDate}) {
     return (
@@ -12,7 +13,6 @@ function Morceau({title, author, path, modifDate}) {
             </div>
             <div className="droite">
                 <p>Modifié le {modifDate}</p>
-                <img src="/dots.svg" alt="dots" />
             </div>
         </div>
     )

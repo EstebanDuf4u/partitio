@@ -1,6 +1,7 @@
 $border: #e8dccb;
 $text: #17372f;
 $muted: #6f7b75;
+$cream: #f7f2ea;
 
 .morceau {
     display: flex;
@@ -68,9 +69,10 @@ $muted: #6f7b75;
             line-height: 1;
             color: $muted;
         }
-
-        img {
-            width: 16px;
-        }
     }
+}
+
+.morceau:hover {
+    background-color: $cream;
+    cursor: pointer;
 }
