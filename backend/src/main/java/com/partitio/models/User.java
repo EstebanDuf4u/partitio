@@ -11,5 +11,6 @@ public record User(
     boolean emailVerified,
     String emailVerificationToken,
     OffsetDateTime emailVerificationExpiresAt,
-    OffsetDateTime createdAt) {
+    OffsetDateTime createdAt,
+    boolean is_admin) {
 }

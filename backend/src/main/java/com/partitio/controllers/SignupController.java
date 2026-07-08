@@ -46,7 +46,8 @@ public class SignupController {
           passwordEncoder.encode(request.password()),
           request.terms(),
           emailVerificationToken,
-          emailVerificationExpiresAt);
+          emailVerificationExpiresAt,
+          false);
 
       var verificationLink = "http://localhost:8081/api/verify-email?token=" + emailVerificationToken;
 
