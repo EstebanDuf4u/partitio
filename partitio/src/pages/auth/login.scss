@@ -10,11 +10,24 @@ $border: #e8dccb;
 $danger: #c4362e;
 
 .connexion-page {
-  min-height: 100svh;
-  display: grid;
-  grid-template-columns: 196px minmax(0, 1fr);
   background: $cream;
   color: $text;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 100%;
+}
+
+.right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  width: 100%;
 }
 
 .connexion-brand {

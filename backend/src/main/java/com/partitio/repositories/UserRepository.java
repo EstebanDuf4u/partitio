@@ -1,12 +1,14 @@
 package com.partitio.repositories;
 
-import com.partitio.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.Optional;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.partitio.models.User;
 
 @Repository
 public class UserRepository {
@@ -23,7 +25,9 @@ public class UserRepository {
       String passwordHash,
       boolean acceptedTerms,
       String emailVerificationToken,
-      OffsetDateTime emailVerificationExpiresAt) {
+      OffsetDateTime emailVerificationExpiresAt,
+      boolean is_admin) {
+
     return jdbcTemplate.queryForObject(
         """
             INSERT INTO users (
@@ -33,12 +37,13 @@ public class UserRepository {
               password_hash,
               accepted_terms,
               email_verification_token,
-              email_verification_expires_at
+              email_verification_expires_at,
+              is_admin
             )
-            VALUES (?, ?, LOWER(?), ?, ?, ?, ?)
+            VALUES (?, ?, LOWER(?), ?, ?, ?, ?, ?)
             RETURNING id, first_name, last_name, email, password_hash,
               email_verified, email_verification_token, email_verification_expires_at,
-              created_at
+              created_at, is_admin
             """,
         this::mapUser,
         firstName.trim(),
@@ -47,7 +52,8 @@ public class UserRepository {
         passwordHash,
         acceptedTerms,
         emailVerificationToken,
-        emailVerificationExpiresAt);
+        emailVerificationExpiresAt,
+        is_admin);
   }
 
   public Optional<User> findByEmail(String email) {
@@ -55,7 +61,7 @@ public class UserRepository {
         """
             SELECT id, first_name, last_name, email, password_hash,
               email_verified, email_verification_token, email_verification_expires_at,
-              created_at
+              created_at, is_admin
             FROM users
             WHERE email = LOWER(?)
             """,
@@ -70,7 +76,7 @@ public class UserRepository {
         """
             SELECT id, first_name, last_name, email, password_hash,
               email_verified, email_verification_token, email_verification_expires_at,
-              created_at
+              created_at, is_admin
             FROM users
             WHERE id = ?
             """,
@@ -85,7 +91,7 @@ public class UserRepository {
         """
             SELECT id, first_name, last_name, email, password_hash,
               email_verified, email_verification_token, email_verification_expires_at,
-              created_at
+              created_at, is_admin
             FROM users
             WHERE email_verification_token = ?
             """,
@@ -117,6 +123,7 @@ public class UserRepository {
         resultSet.getBoolean("email_verified"),
         resultSet.getString("email_verification_token"),
         resultSet.getObject("email_verification_expires_at", OffsetDateTime.class),
-        resultSet.getObject("created_at", OffsetDateTime.class));
+        resultSet.getObject("created_at", OffsetDateTime.class),
+        resultSet.getBoolean("is_admin"));
   }
 }
