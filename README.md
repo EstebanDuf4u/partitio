@@ -206,6 +206,31 @@ PasswordConfig.java  # BCryptPasswordEncoder
 WebConfig.java       # CORS pour /api/**
 ```
 
+### Tests backend
+
+Les tests unitaires Java sont dans :
+
+```text
+backend/src/test/java/
+```
+
+Ils couvrent les controleurs, DTO, configuration, service JWT et repository backend avec JUnit 5, Mockito et Spring Boot Test.
+
+Lancer les tests backend :
+
+```bash
+cd backend
+mvn test
+```
+
+Un rapport de couverture JaCoCo est genere pendant les tests :
+
+```text
+backend/target/site/jacoco/index.html
+```
+
+Les tests Java couvrent le backend Spring Boot. Le frontend React/Vite n'est pas couvert par ces tests Java.
+
 ### Endpoints backend
 
 Healthcheck :
