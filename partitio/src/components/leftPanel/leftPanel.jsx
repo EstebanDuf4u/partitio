@@ -45,7 +45,7 @@ function LeftPanel({ user }) {
             </div>
 
             {user && (
-                <NavLink to="/piece" className="btnProfil">
+                <NavLink to="/profilpage" className="btnProfil">
                     <img src="/avatar.svg" alt="avatar" />
                     <div className="profilText">
                         <p className="prenomNom">Prenom Nom</p>

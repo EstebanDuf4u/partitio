@@ -4,6 +4,8 @@ Partitio est une application React + Java Spring Boot avec une base PostgreSQL. 
 
 ## Demarrage rapide
 
+Remplir le .env avec le .env.example, et le mettre dans le bon dossier partitio
+
 Depuis la racine du projet :
 
 ```bash
