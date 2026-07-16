@@ -45,6 +45,10 @@ function Dashboard() {
         console.log(search);
     }, [search]);
 
+    useEffect(() => {
+        console.log(user);
+    }, [user])
+
     if (isLoading) {
         return null;
     }
@@ -63,7 +67,7 @@ function Dashboard() {
 
     return (
         <div className="all">
-            <LeftPanel />
+            <LeftPanel user={user} />
             <div className="panneauDroite">
                 <div className="top">
                     <div className="texte">

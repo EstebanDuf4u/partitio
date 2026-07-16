@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './signup.scss'
+import LeftPanel from '../../components/leftPanel/leftPanel'
 
 const initialForm = {
   firstName: '',
@@ -109,122 +110,115 @@ function SignUp() {
 
   return (
     <main className="signup-page">
-      <aside className="signup-brand">
-        <div>
-          <div className="signup-logo">
-            <span aria-hidden="true">♪</span>
-            <strong>Partitio</strong>
+      <LeftPanel user={null} />
+      <div className='right'>
+        <section className="signup-panel" aria-labelledby="signup-title">
+          <div className="signup-intro">
+            <p className="signup-kicker">Partitio</p>
+            <h1 id="signup-title">Creer un compte</h1>
+            <p>Entre tes informations pour commencer. Le captcha pourra etre ajoute ici plus tard.</p>
           </div>
-          <p>Gerer vos partitions en toute harmonie</p>
-        </div>
-      </aside>
 
-      <section className="signup-panel" aria-labelledby="signup-title">
-        <div className="signup-intro">
-          <p className="signup-kicker">Partitio</p>
-          <h1 id="signup-title">Creer un compte</h1>
-          <p>Entre tes informations pour commencer. Le captcha pourra etre ajoute ici plus tard.</p>
-        </div>
+          <form className="signup-form" onSubmit={handleSubmit} noValidate>
+            <div className="signup-grid">
+              <label className="field">
+                <span>Prenom</span>
+                <input
+                  name="firstName"
+                  type="text"
+                  value={form.firstName}
+                  onChange={updateField}
+                  autoComplete="given-name"
+                  aria-invalid={Boolean(fieldError('firstName'))}
+                />
+                {fieldError('firstName') && <small>{fieldError('firstName')}</small>}
+              </label>
 
-        <form className="signup-form" onSubmit={handleSubmit} noValidate>
-          <div className="signup-grid">
+              <label className="field">
+                <span>Nom</span>
+                <input
+                  name="lastName"
+                  type="text"
+                  value={form.lastName}
+                  onChange={updateField}
+                  autoComplete="family-name"
+                  aria-invalid={Boolean(fieldError('lastName'))}
+                />
+                {fieldError('lastName') && <small>{fieldError('lastName')}</small>}
+              </label>
+            </div>
+
             <label className="field">
-              <span>Prenom</span>
+              <span>Mail</span>
               <input
-                name="firstName"
-                type="text"
-                value={form.firstName}
+                name="email"
+                type="email"
+                value={form.email}
                 onChange={updateField}
-                autoComplete="given-name"
-                aria-invalid={Boolean(fieldError('firstName'))}
+                autoComplete="email"
+                aria-invalid={Boolean(fieldError('email'))}
               />
-              {fieldError('firstName') && <small>{fieldError('firstName')}</small>}
+              {fieldError('email') && <small>{fieldError('email')}</small>}
             </label>
 
             <label className="field">
-              <span>Nom</span>
+              <span>Mot de passe</span>
               <input
-                name="lastName"
-                type="text"
-                value={form.lastName}
+                name="password"
+                type="password"
+                value={form.password}
                 onChange={updateField}
-                autoComplete="family-name"
-                aria-invalid={Boolean(fieldError('lastName'))}
+                autoComplete="new-password"
+                aria-invalid={Boolean(fieldError('password'))}
               />
-              {fieldError('lastName') && <small>{fieldError('lastName')}</small>}
+              {fieldError('password') && <small>{fieldError('password')}</small>}
             </label>
-          </div>
 
-          <label className="field">
-            <span>Mail</span>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={updateField}
-              autoComplete="email"
-              aria-invalid={Boolean(fieldError('email'))}
-            />
-            {fieldError('email') && <small>{fieldError('email')}</small>}
-          </label>
+            <label className="field">
+              <span>Confirmation du mot de passe</span>
+              <input
+                name="confirmPassword"
+                type="password"
+                value={form.confirmPassword}
+                onChange={updateField}
+                autoComplete="new-password"
+                aria-invalid={Boolean(fieldError('confirmPassword'))}
+              />
+              {fieldError('confirmPassword') && <small>{fieldError('confirmPassword')}</small>}
+            </label>
 
-          <label className="field">
-            <span>Mot de passe</span>
-            <input
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={updateField}
-              autoComplete="new-password"
-              aria-invalid={Boolean(fieldError('password'))}
-            />
-            {fieldError('password') && <small>{fieldError('password')}</small>}
-          </label>
+            <div className="captcha-placeholder" aria-label="Captcha a venir">
+              Captcha a ajouter plus tard
+            </div>
 
-          <label className="field">
-            <span>Confirmation du mot de passe</span>
-            <input
-              name="confirmPassword"
-              type="password"
-              value={form.confirmPassword}
-              onChange={updateField}
-              autoComplete="new-password"
-              aria-invalid={Boolean(fieldError('confirmPassword'))}
-            />
-            {fieldError('confirmPassword') && <small>{fieldError('confirmPassword')}</small>}
-          </label>
+            <label className="terms">
+              <input name="terms" type="checkbox" checked={form.terms} onChange={updateField} />
+              <span>J'accepte les conditions generales.</span>
+            </label>
+            {fieldError('terms') && <small className="terms-error">{fieldError('terms')}</small>}
 
-          <div className="captcha-placeholder" aria-label="Captcha a venir">
-            Captcha a ajouter plus tard
-          </div>
+            {status.message && (
+              <p className={`signup-status signup-status--${status.type}`} role="status">
+                {status.message}
+              </p>
+            )}
 
-          <label className="terms">
-            <input name="terms" type="checkbox" checked={form.terms} onChange={updateField} />
-            <span>J'accepte les conditions generales.</span>
-          </label>
-          {fieldError('terms') && <small className="terms-error">{fieldError('terms')}</small>}
+            {verificationLink && (
+              <a className="signup-status signup-status--success" href={verificationLink}>
+                Valider mon email
+              </a>
+            )}
 
-          {status.message && (
-            <p className={`signup-status signup-status--${status.type}`} role="status">
-              {status.message}
+            <button className="signup-submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Inscription...' : "S'inscrire"}
+            </button>
+
+            <p className="auth-switch">
+              Deja un compte ? <Link to="/login">Se connecter</Link>
             </p>
-          )}
-
-          {verificationLink && (
-            <a className="signup-status signup-status--success" href={verificationLink}>
-              Valider mon email
-            </a>
-          )}
-
-          <button className="signup-submit" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Inscription...' : "S'inscrire"}
-          </button>
-
-          <p className="auth-switch">
-            Deja un compte ? <Link to="/login">Se connecter</Link>
-          </p>
-        </form>
-      </section>
+          </form>
+        </section>
+      </div>
     </main>
   )
 }
