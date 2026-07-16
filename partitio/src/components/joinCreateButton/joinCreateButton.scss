@@ -1,6 +1,17 @@
 $green-800: #185947;
 $light-green: #e6ede1;
 
+
+.joinCreateButton {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    width: 100%;
+}
 .boutonBottom {
     display: flex;
     flex-direction: row;

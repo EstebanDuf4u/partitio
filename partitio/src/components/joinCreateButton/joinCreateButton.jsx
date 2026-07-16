@@ -3,8 +3,8 @@ import { PlusIcon } from '@phosphor-icons/react';
 
 function JoinCreateButton({ ref, ...others }) {
     return (
-        <div ref={ref} {...others}>
-            <div className="boutonBottom">
+        <div className="joinCreateButton">
+            <div ref={ref} {...others} className="boutonBottom">
                 <PlusIcon />
                 <div className="boutonTexte">
                     <p>Rejoindre ou créer</p>
