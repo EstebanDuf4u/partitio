@@ -30,11 +30,15 @@ public class VerifyEmailController {
 
     var user = userOptional.get();
 
-    if (user.emailVerificationExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC))) {
+    if (user.getEmailVerificationExpiresAt() == null
+        || user.getEmailVerificationExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC))) {
       return ResponseEntity.badRequest().body(new ErrorResponse("Lien de validation expire."));
     }
 
-    userRepository.markEmailAsVerified(user.id());
+    user.setEmailVerified(true);
+    user.setEmailVerificationToken(null);
+    user.setEmailVerificationExpiresAt(null);
+    userRepository.save(user);
 
     return ResponseEntity.ok(Map.of("message", "Email valide avec succes."));
   }

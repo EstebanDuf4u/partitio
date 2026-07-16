@@ -5,16 +5,16 @@ import java.time.OffsetDateTime;
 
 public record UserResponse(
     long id,
-    String firstName,
+  String firstName,
     String lastName,
     String email,
     OffsetDateTime createdAt) {
   public static UserResponse from(User user) {
     return new UserResponse(
-        user.id(),
-        user.firstName(),
-        user.lastName(),
-        user.email(),
-        user.createdAt());
+        user.getId(),
+        user.getFirstName(),
+        user.getLastName(),
+        user.getEmail(),
+        user.getCreatedAt());
   }
 }
