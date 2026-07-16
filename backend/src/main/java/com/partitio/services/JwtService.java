@@ -28,8 +28,8 @@ public class JwtService {
     Instant expiration = now.plusSeconds(jwtExpirationSeconds);
 
     return Jwts.builder()
-        .subject(String.valueOf(user.id()))
-        .claim("email", user.email())
+        .subject(String.valueOf(user.getId()))
+        .claim("email", user.getEmail())
         .issuedAt(Date.from(now))
         .expiration(Date.from(expiration))
         .signWith(getSigningKey())

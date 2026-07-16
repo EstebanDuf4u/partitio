@@ -88,38 +88,6 @@ $text: #17372f;
                     max-height: 50px;
                 }
             }
-
-            .addPiece {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-
-                background-color: $green-950;
-                border-radius: 10px;
-
-                column-gap: 10px;
-                padding: 10px;
-
-                height: fit-content;
-                max-height: 50px;
-                width: fit-content;
-                max-width: 250px;
-
-                svg {
-                    height: 24px;
-                    width: 24px;
-                    color: $paper;
-                }
-
-                p {
-                    color: $paper;
-                    font-family: "Inter";
-                    font-weight: 400;
-                    font-size: 20px;
-                    line-height: 1;
-                }
-            }
         }
 
         .cards {
