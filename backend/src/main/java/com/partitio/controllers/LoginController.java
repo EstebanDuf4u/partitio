@@ -42,10 +42,10 @@ public class LoginController {
 
   @PostMapping
   public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
-    return userRepository.findByEmail(request.email())
-        .filter(user -> passwordEncoder.matches(request.password(), user.passwordHash()))
+    return userRepository.findByEmailIgnoreCase(request.email().trim())
+        .filter(user -> passwordEncoder.matches(request.password(), user.getPasswordHash()))
         .<ResponseEntity<?>>map(user -> {
-          if (!user.emailVerified()) {
+          if (!user.isEmailVerified()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new ErrorResponse("Merci de valider ton email avant de te connecter."));
           }
