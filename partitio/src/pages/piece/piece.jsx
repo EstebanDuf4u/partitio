@@ -2,6 +2,7 @@ import "./piece.scss";
 
 import LeftPanel from "../../components/leftPanel/leftPanel";
 import Card from "../../components/card/card";
+import AddPieceButton from "../../components/addPieceButton/addPieceButton";
 
 import { useState } from "react";
 import { Input } from '@mantine/core';
@@ -88,10 +89,7 @@ function Piece() {
                         <Input placeholder="Rechercher un morceau" leftSection={<MagnifyingGlassIcon size={32} />} />
                         {/* <input type="text" placeholder="Rechercher un morceau" value={search} onChange={(e) => setSearch(e.target.value)} /> */}
                     </div>
-                    <div className="addPiece">
-                        <PlusIcon />
-                        <p>Ajouter un morceau</p>
-                    </div>
+                    <AddPieceButton />
                 </div>
                 <div className="cards">
                     {/* {...pieces} permet de ne pas écrire :
