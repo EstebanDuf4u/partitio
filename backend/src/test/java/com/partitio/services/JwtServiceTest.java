@@ -18,7 +18,7 @@ class JwtServiceTest {
 
     assertThat(token).isNotBlank();
     assertThat(service.isTokenValid(token)).isTrue();
-    assertThat(service.getUserId(token)).isEqualTo(user.id());
+    assertThat(service.getUserId(token)).isEqualTo(user.getId());
   }
 
   @Test
@@ -30,8 +30,7 @@ class JwtServiceTest {
   }
 
   private static User user() {
-    return new User(
-        42L,
+    var user = new User(
         "Jane",
         "Doe",
         "jane.doe@test.fr",
@@ -39,7 +38,9 @@ class JwtServiceTest {
         true,
         null,
         null,
-        OffsetDateTime.parse("2026-07-09T12:00:00Z"),
-        false);
+      false);
+    user.setId(42L);
+    user.setCreatedAt(OffsetDateTime.parse("2026-07-09T12:00:00Z"));
+    return user;
   }
 }

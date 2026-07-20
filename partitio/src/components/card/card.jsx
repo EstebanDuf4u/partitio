@@ -1,4 +1,5 @@
 import MenuPiece from "../menuPiece/menuPiece";
+import Voice from "../voice/voice";
 import "./card.scss"
 
 function Card({ coverSrc, title, author, voices, modifDate }) {
@@ -13,9 +14,7 @@ function Card({ coverSrc, title, author, voices, modifDate }) {
             </div>
             <div className="typeVoice">
                 {voices.length == 4 ? <span className="voice tout">TOUT</span> : voices.map((voice) => (
-                    <span key={voice} className={`voice ${voice.toLowerCase()} ${voices.length === 1 ? "full" : ""} ${voices.length === 2 ? "haut" : ""}`}>
-                        {voice.toUpperCase()}
-                    </span>
+                    <Voice voice={voice} nbreVoice={voices.length}/>
                 ))}
             </div>
             <hr />

@@ -2,36 +2,25 @@ package com.partitio.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.partitio.models.User;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.mockito.Mockito;
 
 class UserRepositoryTest {
-  private final JdbcTemplate jdbcTemplate = org.mockito.Mockito.mock(JdbcTemplate.class);
-  private final UserRepository repository = new UserRepository(jdbcTemplate);
+  private final UserRepository repository = Mockito.mock(
+      UserRepository.class,
+      Mockito.withSettings().defaultAnswer(Mockito.CALLS_REAL_METHODS));
 
   @Test
-  void createTrimsNamesAndEmailBeforeInsert() {
+  void createTrimsAndNormalizesInputBeforeSave() {
     var user = user();
-    when(jdbcTemplate.queryForObject(
-        anyString(),
-        org.mockito.ArgumentMatchers.<RowMapper<User>>any(),
-        eq("Jane"),
-        eq("Doe"),
-        eq("Jane.Doe@Test.fr"),
-        eq("hash"),
-        eq(true),
-        eq("verification-token"),
-        any(OffsetDateTime.class),
-        eq(false))).thenReturn(user);
+    when(repository.save(any(User.class))).thenReturn(user);
 
     var created = repository.create(
         " Jane ",
@@ -44,16 +33,13 @@ class UserRepositoryTest {
         false);
 
     assertThat(created).isEqualTo(user);
+    verify(repository).save(any(User.class));
   }
 
   @Test
-  void findByEmailReturnsFirstMatchingUser() {
+  void findByEmailReturnsTrimmedLowercaseLookup() {
     var user = user();
-    when(jdbcTemplate.query(
-        anyString(),
-        org.mockito.ArgumentMatchers.<RowMapper<User>>any(),
-        eq("jane.doe@test.fr")))
-        .thenReturn(List.of(user));
+    when(repository.findByEmailIgnoreCase(eq("jane.doe@test.fr"))).thenReturn(Optional.of(user));
 
     var found = repository.findByEmail(" jane.doe@test.fr ");
 
@@ -61,12 +47,8 @@ class UserRepositoryTest {
   }
 
   @Test
-  void findByEmailReturnsEmptyWhenNoUserMatches() {
-    when(jdbcTemplate.query(
-        anyString(),
-        org.mockito.ArgumentMatchers.<RowMapper<User>>any(),
-        eq("missing@test.fr")))
-        .thenReturn(List.of());
+  void findByEmailReturnsNoMatchWhenNotFound() {
+    when(repository.findByEmailIgnoreCase(eq("missing@test.fr"))).thenReturn(Optional.empty());
 
     var found = repository.findByEmail("missing@test.fr");
 
@@ -74,10 +56,9 @@ class UserRepositoryTest {
   }
 
   @Test
-  void findByIdReturnsFirstMatchingUser() {
+  void findByIdReturnsOptionalWhenFound() {
     var user = user();
-    when(jdbcTemplate.query(anyString(), org.mockito.ArgumentMatchers.<RowMapper<User>>any(), eq(1L)))
-        .thenReturn(List.of(user));
+    when(repository.findById(1L)).thenReturn(Optional.of(user));
 
     var found = repository.findById(1L);
 
@@ -87,8 +68,7 @@ class UserRepositoryTest {
   @Test
   void findByEmailVerificationTokenReturnsFirstMatchingUser() {
     var user = user();
-    when(jdbcTemplate.query(anyString(), org.mockito.ArgumentMatchers.<RowMapper<User>>any(), eq("token")))
-        .thenReturn(List.of(user));
+    when(repository.findByEmailVerificationToken("token")).thenReturn(Optional.of(user));
 
     var found = repository.findByEmailVerificationToken("token");
 
@@ -97,22 +77,29 @@ class UserRepositoryTest {
 
   @Test
   void markEmailAsVerifiedUpdatesUserAndClearsVerificationFields() {
+    var user = user();
+    when(repository.findById(1L)).thenReturn(Optional.of(user));
+
     repository.markEmailAsVerified(1L);
 
-    verify(jdbcTemplate).update(anyString(), eq(1L));
+    verify(repository).save(user);
+    assertThat(user.isEmailVerified()).isTrue();
+    assertThat(user.getEmailVerificationToken()).isNull();
+    assertThat(user.getEmailVerificationExpiresAt()).isNull();
   }
 
   private static User user() {
-    return new User(
-        1L,
+    var user = new User(
         "Jane",
         "Doe",
         "jane.doe@test.fr",
         "hash",
-        false,
+        true,
         "token",
         OffsetDateTime.parse("2026-07-10T12:00:00Z"),
-        OffsetDateTime.parse("2026-07-09T12:00:00Z"),
-        false);
+      false);
+    user.setId(1L);
+    user.setCreatedAt(OffsetDateTime.parse("2026-07-09T12:00:00Z"));
+    return user;
   }
 }

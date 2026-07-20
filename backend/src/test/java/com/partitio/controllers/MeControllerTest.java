@@ -61,8 +61,7 @@ class MeControllerTest {
   }
 
   private static User user() {
-    return new User(
-        1L,
+    var user = new User(
         "Jane",
         "Doe",
         "jane.doe@test.fr",
@@ -70,7 +69,10 @@ class MeControllerTest {
         true,
         null,
         null,
-        OffsetDateTime.parse("2026-07-09T12:00:00Z"),
         false);
+    user.setId(1L);
+    user.setEmailVerified(true);
+    user.setCreatedAt(OffsetDateTime.parse("2026-07-09T12:00:00Z"));
+    return user;
   }
 }

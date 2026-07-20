@@ -29,12 +29,13 @@ $danger: #c4362e;
     border-radius: 10px;
 
     text-decoration: none;
-    color: inherit;
+    color: $cream;
 
     svg {
         width: 24px;
         height: 24px;
-        filter: $cream-svg;
+        color: $cream;
+        filter: none;
     }
 
     p {

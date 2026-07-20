@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import './login.scss'
-import LeftPanel from '../../components/leftPanel/leftPanel'
+import LeftPanel from '../../../components/leftPanel/leftPanel'
 
 const initialForm = {
     email: '',
@@ -10,10 +10,13 @@ const initialForm = {
 
 function Login() {
     const navigate = useNavigate()
+    const location = useLocation()
     const [form, setForm] = useState(initialForm)
     const [submitted, setSubmitted] = useState(false)
     const [status, setStatus] = useState({ type: '', message: '' })
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    const originalUrl = location.state?.from || '/dashboard'
 
     const errors = useMemo(() => {
         const nextErrors = {}
@@ -75,7 +78,7 @@ function Login() {
             setForm(initialForm)
             setSubmitted(false)
             setStatus({ type: 'success', message: 'Connexion reussie.' })
-            navigate('/dashboard', { replace: true })
+            navigate(originalUrl, {replace:true})
         } catch {
             setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
         } finally {

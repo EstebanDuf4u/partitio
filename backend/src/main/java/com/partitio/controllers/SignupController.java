@@ -1,15 +1,10 @@
 package com.partitio.controllers;
 
-import com.partitio.dtos.ErrorResponse;
-import com.partitio.dtos.SignupRequest;
-import com.partitio.dtos.UserResponse;
-import com.partitio.models.User;
-import com.partitio.repositories.UserRepository;
-import jakarta.validation.Valid;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.UUID;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.partitio.dtos.ErrorResponse;
+import com.partitio.dtos.SignupRequest;
+import com.partitio.dtos.UserResponse;
+import com.partitio.models.User;
+import com.partitio.repositories.UserRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/signup")
@@ -48,7 +51,8 @@ public class SignupController {
           passwordEncoder.encode(request.password()),
           request.terms(),
           emailVerificationToken,
-          emailVerificationExpiresAt);
+          emailVerificationExpiresAt,
+        false);
       user = userRepository.save(user);
 
       var verificationLink = "http://localhost:8081/api/verify-email?token=" + emailVerificationToken;

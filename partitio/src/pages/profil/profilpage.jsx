@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import './profilpage.scss'
-import LeftPanel from '../components/leftPanel/leftPanel'
+import LeftPanel from '../../components/leftPanel/leftPanel'
 import { PenIcon, TrashIcon, EnvelopeIcon, PhoneIcon, MapPinIcon } from "@phosphor-icons/react";
+import Voice from '../../components/voice/voice';
+import { useNavigate } from 'react-router-dom';
 
 const initialForm = {
     firstName: '',
@@ -16,35 +18,36 @@ const initialForm = {
 
 function Profil() {
     const [form, setForm] = useState(initialForm)
-    const [user, setUser] = useState(null)
     const [isEditing, setIsEditing] = useState(false)
     const [profileImage, setProfileImage] = useState(null)
+    
+    const [user, setUser] = useState(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetch('/api/me', {
-            method: 'GET',
-            credentials: 'include'
+            credentials: 'same-origin'
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Impossible de récupérer le profil')
-                }
-
+                if (!response.ok) throw new Error()
                 return response.json()
             })
-            .then(data => {
-                setUser(data.user)
+            .then(({ user }) => {
+                setUser(user)
 
-                setForm({
-                    firstName: data.user.firstName,
-                    lastName: data.user.lastName,
-                    email: data.user.email
-                })
+                setForm(form => ({
+                    ...form,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email
+                }))
             })
-            .catch(error => {
-                console.error(error)
-            })
-    }, [])
+            .catch(() => navigate('/login', { 
+                replace: true, 
+                state: {from: location.pathname}}))
+    }, [navigate])
+
+    if (!user) return null
 
     const deleteProfile = (() => {
         console.log("test deleteProfile");
@@ -53,7 +56,7 @@ function Profil() {
     return (
         <>
             <main className="profil-page">
-                <LeftPanel />
+                <LeftPanel user={user} />
                 <div className="profil-content">
                     <p className="profil-kicker">Mon profil</p>
                     <section className="profil-panel" aria-labelledby="profil-title">
@@ -66,11 +69,7 @@ function Profil() {
                             >
                                 <img
                                     className="profil-image"
-                                    src={
-                                        profileImage
-                                            ? URL.createObjectURL(profileImage)
-                                            : '/utilisateurtest.jpg'
-                                    }
+                                    src={profileImage ? URL.createObjectURL(profileImage) : '/utilisateurtest.jpg'}
                                     alt="Photo de profil"
                                 />
 
@@ -145,7 +144,10 @@ function Profil() {
                                         </select>
                                     </>
                                 ) : (
-                                    <p className="userVoice">{form.voiceType || 'Type de voix'}</p>)}
+                                    <>
+                                        {form.voiceType ? <Voice voice={form.voiceType} nbreVoice={1} /> : <Voice voice={"Soprano"} nbreVoice={1} />}
+                                    </>
+                                )}
 
                             </div>
 

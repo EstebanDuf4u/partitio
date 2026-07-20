@@ -1,6 +1,7 @@
 package com.partitio.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -40,27 +41,31 @@ class VerifyEmailControllerTest {
 
   @Test
   void verifyEmailMarksUserAsVerified() {
-    when(userRepository.findByEmailVerificationToken("valid"))
-        .thenReturn(Optional.of(user(OffsetDateTime.now(ZoneOffset.UTC).plusHours(1))));
+    var user = user(OffsetDateTime.now(ZoneOffset.UTC).plusHours(1));
+    when(userRepository.findByEmailVerificationToken("valid")).thenReturn(Optional.of(user));
 
     var response = controller.verifyEmail("valid");
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.getBody()).asString().contains("Email valide avec succes.");
-    verify(userRepository).markEmailAsVerified(1L);
+    verify(userRepository).save(any(User.class));
+    assertThat(user.isEmailVerified()).isTrue();
+    assertThat(user.getEmailVerificationToken()).isNull();
+    assertThat(user.getEmailVerificationExpiresAt()).isNull();
   }
 
   private static User user(OffsetDateTime expiresAt) {
-    return new User(
-        1L,
+    var user = new User(
         "Jane",
         "Doe",
         "jane.doe@test.fr",
         "hashed-password",
-        false,
+        true,
         "token",
         expiresAt,
-        OffsetDateTime.parse("2026-07-09T12:00:00Z"),
-        false);
+      false);
+    user.setId(1L);
+    user.setCreatedAt(OffsetDateTime.parse("2026-07-09T12:00:00Z"));
+    return user;
   }
 }

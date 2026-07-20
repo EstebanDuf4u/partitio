@@ -21,8 +21,8 @@ function LeftPanel({ user }) {
                         <div className="btnDiv">
                             <Button name="Tableau de bord" image={<HouseIcon />} path="/dashboard" />
                             <Button name="Morceaux" image={<MusicNoteIcon />} path="/piece" />
-                            <Button name="Documents" image={<FileTextIcon />} path="/piece" />
-                            <Button name="Ensembles" image={<UsersIcon />} path="/piece" />
+                            <Button name="Documents" image={<FileTextIcon />} path="/documents" />
+                            <Button name="Ensembles" image={<UsersIcon />} path="/ensembles" />
                         </div>
 
                         {user.is_admin && (
@@ -35,8 +35,8 @@ function LeftPanel({ user }) {
                                 </div>
 
                                 <div className="btnDiv">
-                                    <Button name="Utilisateurs" image={<UserListIcon />} path="/piece" />
-                                    <Button name="Rôles" image={<UserPlusIcon />} path="/piece" />
+                                    <Button name="Utilisateurs" image={<UserListIcon />} path="/users" />
+                                    <Button name="Rôles" image={<UserPlusIcon />} path="/roles" />
                                 </div>
                             </>
                         )}
@@ -48,7 +48,7 @@ function LeftPanel({ user }) {
                 <NavLink to="/profilpage" className="btnProfil">
                     <img src="/avatar.svg" alt="avatar" />
                     <div className="profilText">
-                        <p className="prenomNom">Prenom Nom</p>
+                        <p className="prenomNom">{user.firstName} {user.lastName}</p>
                         <p className="typeVoix">Type de voix</p>
                     </div>
                 </NavLink>

@@ -29,7 +29,7 @@ class LoginControllerTest {
   @Test
   void loginReturnsUserAndJwtCookieWhenCredentialsAreValid() {
     var user = user(true);
-    when(userRepository.findByEmail("jane.doe@test.fr")).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase("jane.doe@test.fr")).thenReturn(Optional.of(user));
     when(passwordEncoder.matches("password123", "hashed-password")).thenReturn(true);
     when(jwtService.generateToken(user)).thenReturn("jwt-token");
 
@@ -43,7 +43,7 @@ class LoginControllerTest {
 
   @Test
   void loginRejectsUnknownEmail() {
-    when(userRepository.findByEmail("jane.doe@test.fr")).thenReturn(Optional.empty());
+    when(userRepository.findByEmailIgnoreCase("jane.doe@test.fr")).thenReturn(Optional.empty());
 
     var response = controller.login(new LoginRequest("jane.doe@test.fr", "password123"));
 
@@ -53,8 +53,8 @@ class LoginControllerTest {
 
   @Test
   void loginRejectsWrongPassword() {
-    var user = user(true);
-    when(userRepository.findByEmail("jane.doe@test.fr")).thenReturn(Optional.of(user));
+    var user = user(false);
+    when(userRepository.findByEmailIgnoreCase("jane.doe@test.fr")).thenReturn(Optional.of(user));
     when(passwordEncoder.matches("wrong-password", "hashed-password")).thenReturn(false);
 
     var response = controller.login(new LoginRequest("jane.doe@test.fr", "wrong-password"));
@@ -66,7 +66,7 @@ class LoginControllerTest {
   @Test
   void loginRejectsUnverifiedEmail() {
     var user = user(false);
-    when(userRepository.findByEmail("jane.doe@test.fr")).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase("jane.doe@test.fr")).thenReturn(Optional.of(user));
     when(passwordEncoder.matches("password123", "hashed-password")).thenReturn(true);
 
     var response = controller.login(new LoginRequest("jane.doe@test.fr", "password123"));
@@ -76,16 +76,18 @@ class LoginControllerTest {
   }
 
   private static User user(boolean emailVerified) {
-    return new User(
-        1L,
+    var user = new User(
         "Jane",
         "Doe",
         "jane.doe@test.fr",
         "hashed-password",
-        emailVerified,
+        true,
         null,
         null,
-        OffsetDateTime.parse("2026-07-09T12:00:00Z"),
         false);
+    user.setId(1L);
+    user.setEmailVerified(emailVerified);
+    user.setCreatedAt(OffsetDateTime.parse("2026-07-09T12:00:00Z"));
+    return user;
   }
 }
