@@ -115,11 +115,11 @@ function Profil() {
                                         <input className="userLastNameInput"
                                             type="text"
                                             value={form.lastName}
-                                            onChange={(event) =>
-                                                setForm({
-                                                    ...form,
-                                                    lastName: event.target.value
-                                                })
+                                            onChange={(event) => {
+                                                setForm({...form, lastName: event.target.value});
+                                                console.log(event.target.value);
+                                            }
+
                                             }
                                         />
                                     ) : (
@@ -198,7 +198,7 @@ function Profil() {
                             <div className="buttonsCard">
                                 {isEditing ? (
                                     <>
-                                        <button className="buttonModify buttonBouton">
+                                        <button className="buttonModify buttonBouton" onClick={() => setIsEditing(false)}>
                                             Valider
                                         </button>
 

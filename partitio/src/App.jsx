@@ -1,4 +1,3 @@
-import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SignUp from './pages/auth/signup/signup.jsx'
 import Login from './pages/auth/login/login.jsx'
