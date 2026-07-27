@@ -2,21 +2,21 @@ import MenuPiece from "../menuPiece/menuPiece";
 import Voice from "../voice/voice";
 import "./card.scss"
 
-function Card({ coverSrc, title, author, voices, modifDate }) {
+function Card({ coverSrc, title, artist, voices, modifDate }) {
     return (
         <div className="card">
             <div className="imgText">
                 <img src={coverSrc} alt={title} />
                 <div className="songName">
                     <p id="title">{title}</p>
-                    <p>{author}</p>
+                    <p>{artist}</p>
                 </div>
             </div>
-            <div className="typeVoice">
+            {/* <div className="typeVoice">
                 {voices.length == 4 ? <span className="voice tout">TOUT</span> : voices.map((voice) => (
                     <Voice voice={voice} nbreVoice={voices.length}/>
                 ))}
-            </div>
+            </div> */}
             <hr />
             <div className="date">
                 <p>Modifié le {modifDate}</p>
