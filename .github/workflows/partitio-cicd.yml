@@ -1,0 +1,255 @@
+name: Partitio CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: partitio-${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
+  DEPLOY_PATH: ${{ vars.VPS_DEPLOY_PATH || '/opt/partitio' }}
+
+jobs:
+  build:
+    name: Build and publish Docker image
+    runs-on: ubuntu-latest
+    outputs:
+      environment_name: ${{ steps.target.outputs.environment_name }}
+      image: ${{ steps.image.outputs.image }}
+      image_tag: ${{ steps.target.outputs.image_tag }}
+      service: ${{ steps.target.outputs.service }}
+      service_env_file: ${{ steps.target.outputs.service_env_file }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Resolve deployment target
+        id: target
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          case "${GITHUB_REF_NAME}" in
+            dev)
+              echo "environment_name=development" >> "$GITHUB_OUTPUT"
+              echo "image_tag=dev" >> "$GITHUB_OUTPUT"
+              echo "service=partitio-dev" >> "$GITHUB_OUTPUT"
+              echo "service_env_file=.env.dev" >> "$GITHUB_OUTPUT"
+              ;;
+            main)
+              echo "environment_name=production" >> "$GITHUB_OUTPUT"
+              echo "image_tag=prod" >> "$GITHUB_OUTPUT"
+              echo "service=partitio-prod" >> "$GITHUB_OUTPUT"
+              echo "service_env_file=.env.prod" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported branch: ${GITHUB_REF_NAME}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Normalize GHCR image name
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          repository="$(printf '%s' "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
+          echo "image=${REGISTRY}/${repository}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+        with:
+          version: latest
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ steps.image.outputs.image }}
+          tags: |
+            type=raw,value=${{ steps.target.outputs.image_tag }}
+            type=sha,prefix=${{ steps.target.outputs.image_tag }}-,format=short
+          labels: |
+            org.opencontainers.image.title=Partitio
+            org.opencontainers.image.description=Partitio full-stack application image
+
+      - name: Build and push image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: ${{ vars.DOCKER_PLATFORMS || 'linux/amd64' }}
+          push: true
+          pull: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=partitio-${{ steps.target.outputs.image_tag }}
+          cache-to: type=gha,mode=max,scope=partitio-${{ steps.target.outputs.image_tag }}
+          provenance: true
+          sbom: true
+
+  deploy:
+    name: Deploy selected environment
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    environment:
+      name: ${{ needs.build.outputs.environment_name }}
+    steps:
+      - name: Checkout deployment files
+        uses: actions/checkout@v6
+
+      - name: Validate required deployment secrets
+        shell: bash
+        env:
+          VPS_SSH_HOST: ${{ secrets.VPS_SSH_HOST }}
+          VPS_SSH_USER: ${{ secrets.VPS_SSH_USER }}
+          VPS_SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+          GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
+          GHCR_READ_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          missing=0
+          for name in VPS_SSH_HOST VPS_SSH_USER VPS_SSH_PRIVATE_KEY VPS_SSH_KNOWN_HOSTS GHCR_USERNAME GHCR_READ_TOKEN; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing GitHub secret: ${name}"
+              missing=1
+            fi
+          done
+
+          exit "$missing"
+
+      - name: Configure SSH
+        shell: bash
+        env:
+          VPS_SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$VPS_SSH_PRIVATE_KEY" > ~/.ssh/partitio_deploy
+          chmod 600 ~/.ssh/partitio_deploy
+          printf '%s\n' "$VPS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload Compose files
+        shell: bash
+        env:
+          VPS_SSH_HOST: ${{ secrets.VPS_SSH_HOST }}
+          VPS_SSH_PORT: ${{ secrets.VPS_SSH_PORT || '22' }}
+          VPS_SSH_USER: ${{ secrets.VPS_SSH_USER }}
+        run: |
+          set -euo pipefail
+
+          ssh -i ~/.ssh/partitio_deploy -p "$VPS_SSH_PORT" "$VPS_SSH_USER@$VPS_SSH_HOST" \
+            "mkdir -p '$DEPLOY_PATH/db'"
+
+          scp -i ~/.ssh/partitio_deploy -P "$VPS_SSH_PORT" \
+            deploy/docker-compose.yml \
+            deploy/docker-compose.databases.yml \
+            deploy/.env.example \
+            deploy/.env.dev.example \
+            deploy/.env.prod.example \
+            deploy/.env.dev.db.example \
+            deploy/.env.prod.db.example \
+            "$VPS_SSH_USER@$VPS_SSH_HOST:$DEPLOY_PATH/"
+
+          scp -i ~/.ssh/partitio_deploy -P "$VPS_SSH_PORT" -r \
+            db/migrations \
+            "$VPS_SSH_USER@$VPS_SSH_HOST:$DEPLOY_PATH/db/"
+
+      - name: Pull and restart only the selected service
+        shell: bash
+        env:
+          VPS_SSH_HOST: ${{ secrets.VPS_SSH_HOST }}
+          VPS_SSH_PORT: ${{ secrets.VPS_SSH_PORT || '22' }}
+          VPS_SSH_USER: ${{ secrets.VPS_SSH_USER }}
+        run: |
+          set -euo pipefail
+
+          ssh -i ~/.ssh/partitio_deploy -p "$VPS_SSH_PORT" "$VPS_SSH_USER@$VPS_SSH_HOST" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+
+          DEPLOY_PATH='${{ env.DEPLOY_PATH }}'
+          IMAGE='${{ needs.build.outputs.image }}'
+          SERVICE='${{ needs.build.outputs.service }}'
+          SERVICE_ENV_FILE='${{ needs.build.outputs.service_env_file }}'
+          GHCR_USERNAME='${{ secrets.GHCR_USERNAME }}'
+          GHCR_READ_TOKEN='${{ secrets.GHCR_READ_TOKEN }}'
+
+          cd "$DEPLOY_PATH"
+
+          if [ ! -f .env ]; then
+            echo "Missing $DEPLOY_PATH/.env. Create it from .env.example and set PARTITIO_IMAGE=$IMAGE." >&2
+            exit 1
+          fi
+
+          if [ ! -f "$SERVICE_ENV_FILE" ]; then
+            echo "Missing $DEPLOY_PATH/$SERVICE_ENV_FILE. Create it from $SERVICE_ENV_FILE.example." >&2
+            exit 1
+          fi
+
+          if ! command -v docker >/dev/null 2>&1; then
+            echo "Docker is not installed on the VPS." >&2
+            exit 1
+          fi
+
+          docker compose version >/dev/null
+
+          if grep -q '^PARTITIO_IMAGE=' .env; then
+            sed -i "s|^PARTITIO_IMAGE=.*|PARTITIO_IMAGE=$IMAGE|" .env
+          else
+            printf '\nPARTITIO_IMAGE=%s\n' "$IMAGE" >> .env
+          fi
+
+          printf '%s' "$GHCR_READ_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin >/dev/null
+
+          docker compose --env-file .env pull "$SERVICE"
+          docker compose --env-file .env up -d --no-deps "$SERVICE"
+
+          for attempt in $(seq 1 30); do
+            health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{end}}' "$SERVICE" 2>/dev/null || true)"
+            state="$(docker inspect --format '{{.State.Status}}' "$SERVICE" 2>/dev/null || true)"
+
+            if [ -n "$health" ] && [ "$health" = "healthy" ]; then
+              docker compose --env-file .env ps "$SERVICE"
+              exit 0
+            fi
+
+            if [ -z "$health" ] && [ "$state" = "running" ]; then
+              docker compose --env-file .env ps "$SERVICE"
+              exit 0
+            fi
+
+            if [ "$health" = "unhealthy" ] || [ "$state" = "exited" ] || [ "$state" = "dead" ]; then
+              docker logs --tail 200 "$SERVICE" >&2 || true
+              exit 1
+            fi
+
+            sleep 5
+          done
+
+          docker logs --tail 200 "$SERVICE" >&2 || true
+          echo "Service $SERVICE did not become healthy in time." >&2
+          exit 1
+          REMOTE
