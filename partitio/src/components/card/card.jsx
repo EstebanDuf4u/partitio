@@ -1,12 +1,28 @@
+import { useEffect, useState } from "react";
 import MenuPiece from "../menuPiece/menuPiece";
 import Voice from "../voice/voice";
 import "./card.scss"
 
-function Card({ coverSrc, title, artist, voices, modifDate }) {
+function Card({ coverUrl, title, artist, voices, modifDate, documentDto }) {
+    const [lastDate, setLastDate] = useState(null);
+    const API_LINK = "http://localhost:3000";
+
+    useEffect(() => {
+        let latest = null;
+        documentDto.forEach(element => {
+            const currentDate = new Date(element.dateModified);
+
+            if (latest === null || currentDate > latest) {
+                latest = currentDate;
+            }
+        });
+        setLastDate(latest);
+    }, [documentDto]);
+
     return (
         <div className="card">
             <div className="imgText">
-                <img src={coverSrc} alt={title} />
+                <img src={API_LINK+coverUrl} alt={title} />
                 <div className="songName">
                     <p id="title">{title}</p>
                     <p>{artist}</p>
@@ -19,7 +35,7 @@ function Card({ coverSrc, title, artist, voices, modifDate }) {
             </div> */}
             <hr />
             <div className="date">
-                <p>Modifié le {modifDate}</p>
+                <p>Modifié le {lastDate ? lastDate.toLocaleDateString("fr-FR") : ""}</p>
                 <MenuPiece />
             </div>
         </div>
