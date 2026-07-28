@@ -1,0 +1,70 @@
+services:
+  partitio-dev-db:
+    image: postgres:16-alpine
+    container_name: partitio-dev-db
+    restart: unless-stopped
+    env_file:
+      - ./.env.dev.db
+    volumes:
+      - partitio_dev_postgres:/var/lib/postgresql/data
+    networks:
+      - partitio-dev-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  partitio-prod-db:
+    image: postgres:16-alpine
+    container_name: partitio-prod-db
+    restart: unless-stopped
+    env_file:
+      - ./.env.prod.db
+    volumes:
+      - partitio_prod_postgres:/var/lib/postgresql/data
+    networks:
+      - partitio-prod-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  partitio-dev-migrate:
+    image: flyway/flyway:11-alpine
+    container_name: partitio-dev-migrate
+    profiles:
+      - migrations
+    command: -connectRetries=60 -locations=filesystem:/flyway/migrations migrate
+    env_file:
+      - ./.env.dev.db
+    volumes:
+      - ./db/migrations:/flyway/migrations:ro
+    networks:
+      - partitio-dev-net
+    depends_on:
+      partitio-dev-db:
+        condition: service_healthy
+
+  partitio-prod-migrate:
+    image: flyway/flyway:11-alpine
+    container_name: partitio-prod-migrate
+    profiles:
+      - migrations
+    command: -connectRetries=60 -locations=filesystem:/flyway/migrations migrate
+    env_file:
+      - ./.env.prod.db
+    volumes:
+      - ./db/migrations:/flyway/migrations:ro
+    networks:
+      - partitio-prod-net
+    depends_on:
+      partitio-prod-db:
+        condition: service_healthy
+
+volumes:
+  partitio_dev_postgres:
+    name: partitio-dev-postgres
+  partitio_prod_postgres:
+    name: partitio-prod-postgres

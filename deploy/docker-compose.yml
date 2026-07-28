@@ -1,0 +1,68 @@
+name: partitio
+
+services:
+  partitio-dev:
+    image: ${PARTITIO_IMAGE}:${PARTITIO_DEV_IMAGE_TAG:-dev}
+    container_name: partitio-dev
+    restart: unless-stopped
+    env_file:
+      - ./.env.dev
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "${PARTITIO_DEV_BIND_ADDRESS:-127.0.0.1}:${PARTITIO_DEV_HTTP_PORT:-8081}:3000"
+    volumes:
+      - partitio_dev_uploads:/app/uploads
+    networks:
+      - partitio-dev-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health | grep -q 'ok'"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  partitio-prod:
+    image: ${PARTITIO_IMAGE}:${PARTITIO_PROD_IMAGE_TAG:-prod}
+    container_name: partitio-prod
+    restart: unless-stopped
+    env_file:
+      - ./.env.prod
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "${PARTITIO_PROD_BIND_ADDRESS:-127.0.0.1}:${PARTITIO_PROD_HTTP_PORT:-8080}:3000"
+    volumes:
+      - partitio_prod_uploads:/app/uploads
+    networks:
+      - partitio-prod-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health | grep -q 'ok'"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  partitio-dev-net:
+    name: partitio-dev-net
+    driver: bridge
+  partitio-prod-net:
+    name: partitio-prod-net
+    driver: bridge
+
+volumes:
+  partitio_dev_uploads:
+    name: partitio-dev-uploads
+  partitio_prod_uploads:
+    name: partitio-prod-uploads
