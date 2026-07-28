@@ -15,8 +15,6 @@ const initialForm = {
     image: ''
 }
 
-
-
 function Profil() {
     const [form, setForm] = useState(initialForm)
     const [isEditing, setIsEditing] = useState(false)
@@ -24,6 +22,7 @@ function Profil() {
 
     const [user, setUser] = useState(null)
     const navigate = useNavigate()
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         fetch('/api/me', {
@@ -79,33 +78,32 @@ function Profil() {
             })
     }
 
-    const updateProfile = () => {
-        fetch('/api/me', {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                firstName: form.firstName,
-                lastName: form.lastName,
-                email: form.email
-            })
+    const updateProfile = async = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("file", file);
+        fetch('/api/uploads/profile-images', {
+            method: "POST",
+            body: ImageformData,
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Impossible de modifier le profil')
-                }
 
-                return response.json()
-            })
-            .then(({ user }) => {
-                setUser(user)
-                setIsEditing(false)
-            })
-            .catch(error => {
-                console.error(error)
-            })
+        const imagePath = await responseImage.text();
+
+        console.log(imagePath);
+        //     .then(response => {
+        //     if (!response.ok) {
+        //         throw new Error('Impossible de modifier le profil')
+        //     }
+
+        //     return response.json()
+        // })
+        // .then(({ user }) => {
+        //     setUser(user)
+        //     setIsEditing(false)
+        // })
+        // .catch(error => {
+        //     console.error(error)
+        // })
     }
 
     return (
