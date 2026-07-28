@@ -11,7 +11,8 @@ const initialForm = {
     email: '',
     voiceType: '',
     phone: '',
-    town: ''
+    town: '',
+    image: ''
 }
 
 
