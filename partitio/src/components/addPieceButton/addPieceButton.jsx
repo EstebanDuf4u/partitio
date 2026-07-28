@@ -1,5 +1,5 @@
 import "./addPieceButton.scss";
-import { Modal, Input, Select, Textarea, FileInput } from '@mantine/core';
+import { Modal, TextInput, Select, Textarea, FileInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PlusIcon, ImageBrokenIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from "react";
@@ -8,6 +8,11 @@ function AddPieceButton() {
     const [opened, { open, close }] = useDisclosure(false);
     const [file, setFile] = useState(null);
     const [path, setPath] = useState(null);
+    const [title, setTitle] = useState("");
+    const [artist, setArtist] = useState("");
+    const [category, setCategory] = useState("");
+    const [language, setLanguage] = useState("");
+    const [description, setDescription] = useState("");
 
     useEffect(() => {
         if (!file) {
@@ -23,13 +28,38 @@ function AddPieceButton() {
         };
     }, [file]);
 
-    const handleSubmit = ((event) => {
-        console.log("test");
-        
-        const formData = new FormData(event.currentTarget);
-        const data = Object.fromEntries(formData.entries());
-        console.log(data);
-    })
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!file) return;
+
+        const ImageformData = new FormData();
+        ImageformData.append("file", file);
+        ImageformData.append("title", title);
+
+        const responseImage = await fetch("http://localhost:3000/api/uploads/covers", {
+            method: "POST",
+            body: ImageformData,
+        });
+
+        const imagePath = await responseImage.text();
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("artist", artist);
+        formData.append("category", category);
+        formData.append("language", language);
+        formData.append("description", description);
+        formData.append("coverUrl", imagePath)
+
+        const responseFormData = await fetch("http://localhost:3000/api/pieces", {
+            method: "POST",
+            body: formData,
+        });
+        const form = await responseFormData.text();
+
+        console.log(imagePath);
+        console.log(form);
+    };
 
     return (
         <>
@@ -41,19 +71,19 @@ function AddPieceButton() {
                             <div className="infoGrid">
                                 <div className="pieceTitle">
                                     <p>Titre du morceau</p>
-                                    <Input type="text" placeholder="Ex: Hallelujah" />
+                                    <TextInput placeholder="Ex: Hallelujah" value={title} onChange={(event) => setTitle(event.currentTarget.value)} required />
                                 </div>
                                 <div className="artiste">
                                     <p>Compositeur / Artiste</p>
-                                    <Input type="text" placeholder="Ex: Leonard Cohen" />
+                                    <TextInput placeholder="Ex: Leonard Cohen" value={artist} onChange={(event) => setArtist(event.currentTarget.value)} required />
                                 </div>
                                 <div className="category">
                                     <p>Catégorie</p>
-                                    <Select placeholder="Selectionner une catégorie" data={["Pop", "Rock", "Techno", "Classique", "Autre"]} />
+                                    <Select placeholder="Selectionner une catégorie" data={["Pop", "Rock", "Techno", "Classique", "Autre"]} value={category} onChange={setCategory} required />
                                 </div>
                                 <div className="language">
                                     <p>Langue</p>
-                                    <Select placeholder="Selectioner une langue" data={["Français", "Anglais"]} />
+                                    <Select placeholder="Selectioner une langue" data={["Français", "Anglais"]} value={language} onChange={setLanguage} required />
                                 </div>
                             </div>
                         </div>
@@ -64,6 +94,9 @@ function AddPieceButton() {
                                 autosize
                                 resize="vertical"
                                 placeholder="Ajoutez une description, des notes ou des informations utiles..."
+                                value={description}
+                                onChange={(event) => setDescription(event.currentTarget.value)}
+                                required
                             />
                         </div>
                         <div className="cover">
