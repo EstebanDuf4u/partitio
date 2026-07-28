@@ -11,7 +11,8 @@ const initialForm = {
     email: '',
     voiceType: '',
     phone: '',
-    town: ''
+    town: '',
+    image: ''
 }
 
 
@@ -20,7 +21,7 @@ function Profil() {
     const [form, setForm] = useState(initialForm)
     const [isEditing, setIsEditing] = useState(false)
     const [profileImage, setProfileImage] = useState(null)
-    
+
     const [user, setUser] = useState(null)
     const navigate = useNavigate()
 
@@ -42,16 +43,70 @@ function Profil() {
                     email: user.email
                 }))
             })
-            .catch(() => navigate('/login', { 
-                replace: true, 
-                state: {from: location.pathname}}))
+            .catch(() => navigate('/login', {
+                replace: true,
+                state: { from: location.pathname }
+            }))
     }, [navigate])
 
     if (!user) return null
 
-    const deleteProfile = (() => {
-        console.log("test deleteProfile");
-    })
+    const deleteProfile = () => {
+        const confirmation = window.confirm(
+            'Voulez-vous vraiment supprimer votre profil ? Cette action est définitive.'
+        )
+
+        if (!confirmation) {
+            return
+        }
+
+        fetch('/api/me', {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Impossible de supprimer le profil')
+                }
+
+                return response.json()
+            })
+            .then(() => {
+                navigate('/login', { replace: true })
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
+    const updateProfile = () => {
+        fetch('/api/me', {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                firstName: form.firstName,
+                lastName: form.lastName,
+                email: form.email
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Impossible de modifier le profil')
+                }
+
+                return response.json()
+            })
+            .then(({ user }) => {
+                setUser(user)
+                setIsEditing(false)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
 
     return (
         <>
@@ -99,29 +154,33 @@ function Profil() {
                             <div className="userIdentity">
                                 <div className="userName">
                                     {isEditing ? (
-                                        <input className="userFirstNameInput"
-                                            type="text"
-                                            value={form.firstName}
-                                            onChange={(event) =>
-                                                setForm({
-                                                    ...form,
-                                                    firstName: event.target.value
-                                                })
-                                            }
-                                        />
+                                        <><label>Prénom</label>
+                                            <input className="userFirstNameInput"
+                                                type="text"
+                                                value={form.firstName}
+                                                placeholder="Prénom"
+                                                onChange={(event) =>
+                                                    setForm({
+                                                        ...form,
+                                                        firstName: event.target.value
+                                                    })
+                                                }
+                                            /></>
                                     ) : (
                                         <p className="userFirstName">{user?.firstName}</p>)}
                                     {isEditing ? (
-                                        <input className="userLastNameInput"
-                                            type="text"
-                                            value={form.lastName}
-                                            onChange={(event) => {
-                                                setForm({...form, lastName: event.target.value});
-                                                console.log(event.target.value);
-                                            }
+                                        <><label>Nom</label>
+                                            <input className="userLastNameInput"
+                                                type="text"
+                                                value={form.lastName}
+                                                placeholder="Nom"
+                                                onChange={(event) => {
+                                                    setForm({ ...form, lastName: event.target.value });
+                                                    console.log(event.target.value);
+                                                }
 
-                                            }
-                                        />
+                                                }
+                                            /></>
                                     ) : (
                                         <p className="userLastName">{user?.lastName}</p>)}
                                 </div>
@@ -153,44 +212,52 @@ function Profil() {
 
                             <div className="userInformation">
                                 {isEditing ? (
-                                    <input className="userEmailInput"
-                                        type="email"
-                                        value={form.email}
-                                        onChange={(event) =>
-                                            setForm({
-                                                ...form,
-                                                email: event.target.value
-                                            })
-                                        }
-                                    />
+                                    <><label>Email</label>
+                                        <input className="userEmailInput"
+                                            type="email"
+                                            value={form.email}
+                                            placeholder="Email"
+                                            onChange={(event) =>
+                                                setForm({
+                                                    ...form,
+                                                    email: event.target.value
+                                                })
+                                            }
+                                        /></>
                                 ) : (
                                     <p className="userEmail"><EnvelopeIcon />{user?.email}</p>)}
                                 <hr />
                                 {isEditing ? (
-                                    <input className="userPhoneInput"
-                                        type="text"
-                                        value={form.phone}
-                                        onChange={(event) =>
-                                            setForm({
-                                                ...form,
-                                                phone: event.target.value
-                                            })
-                                        }
-                                    />
+                                    <> <label>Numéro de téléphone</label>
+                                        <input className="userPhoneInput"
+                                            type="text"
+                                            value={form.phone}
+                                            placeholder="Numéro de téléphone"
+                                            onChange={(event) =>
+                                                setForm({
+                                                    ...form,
+                                                    phone: event.target.value
+                                                })
+                                            }
+                                        /></>
                                 ) : (
                                     <p className="userPhone"><PhoneIcon />Numéro de téléphone</p>)}
                                 <hr />
                                 {isEditing ? (
-                                    <input className="userTownInput"
-                                        type="text"
-                                        value={form.town}
-                                        onChange={(event) =>
-                                            setForm({
-                                                ...form,
-                                                town: event.target.value
-                                            })
-                                        }
-                                    />
+                                    <>
+                                        <label>Ville</label>
+                                        <input className="userTownInput"
+                                            type="text"
+                                            value={form.town}
+                                            placeholder="Ville"
+                                            onChange={(event) =>
+                                                setForm({
+                                                    ...form,
+                                                    town: event.target.value
+                                                })
+                                            }
+                                        />
+                                    </>
                                 ) : (
                                     <p className="userTown"><MapPinIcon />Ville</p>)}
                             </div>
@@ -198,7 +265,7 @@ function Profil() {
                             <div className="buttonsCard">
                                 {isEditing ? (
                                     <>
-                                        <button className="buttonModify buttonBouton" onClick={() => setIsEditing(false)}>
+                                        <button className="buttonModify buttonBouton" onClick={updateProfile}>
                                             Valider
                                         </button>
 
