@@ -1,6 +1,9 @@
 package com.partitio.models;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +37,10 @@ public class Piece {
 
     @Column(name = "cover_url")
     private String coverUrl;
+
+    @CreationTimestamp
+    @Column(name = "date_added", updatable = false)
+    private LocalDateTime dateAdded;
 
     // Association de type "OneToMany" : un morceau peut avoir plusieurs documents
     @OneToMany(targetEntity = Document.class, mappedBy = "piece")
@@ -99,6 +106,14 @@ public class Piece {
 
     public void setCoverUrl(String coverUrl) {
         this.coverUrl = coverUrl;
+    }
+
+    public LocalDateTime getDateAdded() {
+        return this.dateAdded;
+    }
+
+    public void setDateAdded(LocalDateTime dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
     public List<Document> getDocuments() {

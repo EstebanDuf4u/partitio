@@ -71,7 +71,7 @@ function AddPieceButton() {
                             <div className="infoGrid">
                                 <div className="pieceTitle">
                                     <p>Titre du morceau</p>
-                                    <TextInput placeholder="Ex: Hallelujah" value={title} onChange={(event) => setTitle(event.currentTarget.value)} required />
+                                    <TextInput placeholder="Ex: Hallelujah" value={title} onChange={(event) => setTitle(event.currentTarget.value)} required withAsterisk/>
                                 </div>
                                 <div className="artiste">
                                     <p>Compositeur / Artiste</p>
