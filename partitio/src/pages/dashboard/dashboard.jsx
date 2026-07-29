@@ -13,8 +13,11 @@ import { MagnifyingGlassIcon, MusicNoteIcon, UsersIcon, FileTextIcon, PlusIcon }
 
 function Dashboard() {
     const [search, setSearch] = useState("");
-    const [user, setUser] = useState(null)
-    const navigate = useNavigate()
+    const [user, setUser] = useState(null);
+    const [lastPieces, setLastPieces] = useState([]);
+    const [nbrePieces, setNbrePieces] = useState(0);
+    const [nbreDocuments, setNbreDocuments] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('/api/me', {
@@ -32,15 +35,39 @@ function Dashboard() {
                 state: {from: location.pathname}}))
     }, [navigate])
 
+    useEffect(() => {
+        fetch('api/pieces/latest', {
+            credentials: "same-origin"
+        }).then(response => {
+            if (!response.ok) throw new Error();
+            return response.json();
+        }).then((data) => {
+            setLastPieces(data);
+        }).catch(() => setLastPieces([]));
+
+        fetch('api/pieces', {
+            credentials: "same-origin"
+        }).then(response => {
+            if (!response.ok) throw new Error();
+            return response.json();
+        }).then((data) => {
+            setNbrePieces(data.length);
+        }).catch(() => setNbrePieces(0));
+
+        fetch('api/documents', {
+            credentials: "same-origin"
+        }).then(response => {
+            if (!response.ok) throw new Error();
+            return response.json();
+        }).then((data) => {
+            setNbreDocuments(data.length);
+        }).catch(() => setNbrePieces(0));
+    }, [])
+
+
+
     if (!user) return null
 
-    const morceaux = [
-        { title: "Hallelujah", author: "Leonard Cohen", path: "/cover/hallelujah.jpg", modifDate: "02/07/2026" },
-        { title: "Hier Encore", author: "Charles Aznavour", path: "/cover/hier-encore.jpg", modifDate: "02/07/2026" },
-        { title: "I'm Done", author: "Rutra", path: "/cover/im-done.jpg", modifDate: "02/07/2026" },
-        { title: "Freestyle du sale", author: "Lorenzo", path: "/cover/freestyle-du-sale.jpg", modifDate: "02/07/2026" },
-        { title: "Parisienne", author: "Gims", path: "/cover/parisienne.jpg", modifDate: "02/07/2026" }
-    ];
 
     return (
         <div className="all">
@@ -56,9 +83,9 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="chiffreDiv">
-                    <Nbre image={<MusicNoteIcon />} name="Morceaux" number="28" numberMonthly="3" link="/piece" color="green" />
+                    <Nbre image={<MusicNoteIcon />} name="Morceaux" number={nbrePieces} numberMonthly="3" link="/piece" color="green" />
                     <Nbre image={<UsersIcon />} name="Ensemble" number="4" numberMonthly="null" link="/piece" color="orange" />
-                    <Nbre image={<FileTextIcon />} name="Documents" number="156" numberMonthly="null" link="/piece" color="purple" />
+                    <Nbre image={<FileTextIcon />} name="Documents" number={nbreDocuments} numberMonthly="null" link="/piece" color="purple" />
                     {/* <Nbre image={} name="Commentaires" number="12" numberMonthly="null" link="/piece" color="blue" /> */}
                 </div>
                 <div className="bottom">
@@ -68,8 +95,8 @@ function Dashboard() {
                             <Link to="/piece">Voir tout</Link>
                         </div>
                         <hr />
-                        {morceaux.map((morceau) => (
-                            <Morceau key={`${morceau.title}-${morceau.author}`} {...morceau} />
+                        {lastPieces.map((piece) => (
+                            <Morceau key={`${piece.id}`} {...piece} />
                         ))}
                     </div>
                     <div className="mesEnsembles">

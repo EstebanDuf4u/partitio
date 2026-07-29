@@ -99,7 +99,6 @@ function Piece() {
             return response.json();
         }).then((data) => {
             setPieces(data);
-            console.log(data);
         }).catch(() => setPieces([]));
     }, [])
 

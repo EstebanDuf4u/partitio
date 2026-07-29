@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -40,6 +41,19 @@ public class PieceController {
         // On doit changer le Iterable en List 
         List<Piece> pieceList= new ArrayList<>();
         pieceIterable.forEach(pieceList::add);
+        List<PieceDto> pieceDtoList = pieceList.stream().map(piece -> {
+            PieceIdDto pieceIdDto = new PieceIdDto(piece.getId());
+            List<Document> documentList = piece.getDocuments();
+            List<DocumentDto> documentDtoList = documentList.stream().map(document -> new DocumentDto(document.getId(), document.getName(), document.getVoiceType(), document.getDocumentType(), document.getDateAdded(), document.getDateModified(), document.getDocumentUrl(), pieceIdDto)).collect(Collectors.toList());
+            PieceDto pieceDto = new PieceDto(piece.getId(), piece.getTitle(), piece.getArtist(), piece.getCategory(), piece.getLanguage(), piece.getDescription(), piece.getCoverUrl(), documentDtoList);
+            return pieceDto;
+        }).collect(Collectors.toList());
+        return pieceDtoList;
+    }
+
+    @GetMapping("/latest")
+    public List<PieceDto> getLatest(@RequestParam(defaultValue = "5") int limit) {
+        List<Piece> pieceList = reposit.findTop5ByOrderByDateAddedDesc(PageRequest.of(0,limit, Sort.by("dateAdded").descending()));
         List<PieceDto> pieceDtoList = pieceList.stream().map(piece -> {
             PieceIdDto pieceIdDto = new PieceIdDto(piece.getId());
             List<Document> documentList = piece.getDocuments();
