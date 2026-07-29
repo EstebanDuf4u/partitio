@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +39,25 @@ public class ImageUploadController {
 
             Files.copy(file.getInputStream(), uploadPath.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             return ResponseEntity.ok("/uploads/covers/" + filename);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Erreur d'upload");
+        }
+
+    }
+
+    @PostMapping("/profile-images")
+    public ResponseEntity<String> uploadProfileImage(@RequestParam MultipartFile file) {
+        uploadDir += "/profile-images";
+        try {
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String Filename = file.getOriginalFilename();
+
+            Files.copy(file.getInputStream(), uploadPath.resolve(Filename), StandardCopyOption.REPLACE_EXISTING);
+            return ResponseEntity.ok("/uploads/profile-images/" + Filename);
         } catch (IOException e) {
             return ResponseEntity.internalServerError().body("Erreur d'upload");
         }
