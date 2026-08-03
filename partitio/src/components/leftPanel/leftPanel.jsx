@@ -21,7 +21,6 @@ function LeftPanel({ user }) {
                         <div className="btnDiv">
                             <Button name="Tableau de bord" image={<HouseIcon />} path="/dashboard" />
                             <Button name="Morceaux" image={<MusicNoteIcon />} path="/piece" />
-                            <Button name="Documents" image={<FileTextIcon />} path="/documents" />
                             <Button name="Ensembles" image={<UsersIcon />} path="/ensembles" />
                         </div>
 

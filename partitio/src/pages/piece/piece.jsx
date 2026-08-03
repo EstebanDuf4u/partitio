@@ -10,65 +10,6 @@ import { Input } from '@mantine/core';
 import { PlusIcon, MagnifyingGlassIcon } from '@phosphor-icons/react';
 
 function Piece() {
-    // const pieces = [
-    //     {
-    //         title: "Hallelujah",
-    //         author: "Leonard Cohen",
-    //         coverSrc: "/cover/hallelujah.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["soprano", "alto", "tenor", "basse"]
-    //     },
-    //     {
-    //         title: "Hier Encore",
-    //         author: "Charles Aznavour",
-    //         coverSrc: "/cover/hier-encore.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["alto", "tenor"]
-    //     },
-    //     {
-    //         title: "I'm Done",
-    //         author: "Rutra",
-    //         coverSrc: "/cover/im-done.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["soprano"]
-    //     },
-    //     {
-    //         title: "Freestyle du sale",
-    //         author: "Lorenzo",
-    //         coverSrc: "/cover/freestyle-du-sale.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["tenor", "basse"]
-    //     },
-    //     {
-    //         title: "Parisienne",
-    //         author: "Gims",
-    //         coverSrc: "/cover/parisienne.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["soprano", "alto", "basse"]
-    //     },
-    //     {
-    //         title: "Hier Encore",
-    //         author: "Charles Aznavour",
-    //         coverSrc: "/cover/hier-encore.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["alto", "tenor"]
-    //     },
-    //     {
-    //         title: "I'm Done",
-    //         author: "Rutra",
-    //         coverSrc: "/cover/im-done.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["soprano"]
-    //     },
-    //     {
-    //         title: "Freestyle du sale",
-    //         author: "Lorenzo",
-    //         coverSrc: "/cover/freestyle-du-sale.jpg",
-    //         modifDate: "02/07/2026",
-    //         voices: ["tenor", "basse"]
-    //     },
-    // ];
-
     const [search, setSearch] = useState("");
     const [pieces, setPieces] = useState([]);
     const [user, setUser] = useState(null);

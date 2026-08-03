@@ -3,7 +3,7 @@ import MenuPiece from "../menuPiece/menuPiece";
 import Voice from "../voice/voice";
 import "./card.scss"
 
-function Card({ coverUrl, title, artist, voices, documentDto }) {
+function Card({ id, coverUrl, title, artist, voices, documentDto }) {
     const [lastDate, setLastDate] = useState(null);
     const API_LINK = "http://localhost:3000";
 
@@ -36,7 +36,7 @@ function Card({ coverUrl, title, artist, voices, documentDto }) {
             <hr />
             <div className="date">
                 <p>Modifié le {lastDate ? lastDate.toLocaleDateString("fr-FR") : ""}</p>
-                <MenuPiece />
+                <MenuPiece id={id} />
             </div>
         </div>
 
