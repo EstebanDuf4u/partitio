@@ -14,8 +14,8 @@ import { MagnifyingGlassIcon, MusicNoteIcon, UsersIcon, FileTextIcon, PlusIcon }
 function Dashboard() {
     const [search, setSearch] = useState("");
     const [user, setUser] = useState(null);
+    const [pieces, setPieces] = useState([]);
     const [lastPieces, setLastPieces] = useState([]);
-    const [nbrePieces, setNbrePieces] = useState(0);
     const [nbreDocuments, setNbreDocuments] = useState(0);
     const navigate = useNavigate();
 
@@ -33,26 +33,21 @@ function Dashboard() {
             .catch(() => navigate('/login', { 
                 replace: true, 
                 state: {from: location.pathname}}))
-    }, [navigate])
+    }, [navigate]);
 
     useEffect(() => {
-        fetch('api/pieces/latest', {
-            credentials: "same-origin"
-        }).then(response => {
-            if (!response.ok) throw new Error();
-            return response.json();
-        }).then((data) => {
-            setLastPieces(data);
-        }).catch(() => setLastPieces([]));
-
         fetch('api/pieces', {
             credentials: "same-origin"
         }).then(response => {
             if (!response.ok) throw new Error();
             return response.json();
         }).then((data) => {
-            setNbrePieces(data.length);
-        }).catch(() => setNbrePieces(0));
+            setPieces(data);
+            setLastPieces(data.slice(0,5));
+        }).catch(() => {
+            setPieces([]);
+            setLastPieces([]);
+        });
 
         fetch('api/documents', {
             credentials: "same-origin"
@@ -61,13 +56,13 @@ function Dashboard() {
             return response.json();
         }).then((data) => {
             setNbreDocuments(data.length);
-        }).catch(() => setNbrePieces(0));
-    }, [])
+        }).catch(() => setNbreDocuments(0));
+        const date = Date.now();
+        console.log(date);
+        
+    }, []);
 
-
-
-    if (!user) return null
-
+    if (!user) return null;
 
     return (
         <div className="all">
@@ -83,7 +78,7 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="chiffreDiv">
-                    <Nbre image={<MusicNoteIcon />} name="Morceaux" number={nbrePieces} numberMonthly="3" link="/piece" color="green" />
+                    <Nbre image={<MusicNoteIcon />} name="Morceaux" number={pieces.length} numberMonthly="3" link="/piece" color="green" />
                     <Nbre image={<UsersIcon />} name="Ensemble" number="4" numberMonthly="null" link="/piece" color="orange" />
                     <Nbre image={<FileTextIcon />} name="Documents" number={nbreDocuments} numberMonthly="null" link="/piece" color="purple" />
                     {/* <Nbre image={} name="Commentaires" number="12" numberMonthly="null" link="/piece" color="blue" /> */}

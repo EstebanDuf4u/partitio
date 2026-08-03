@@ -9,7 +9,6 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,9 +23,9 @@ public class ImageUploadController {
 
     @PostMapping("/covers")
     public ResponseEntity<String> uploadCover(@RequestParam MultipartFile file, @RequestParam String title) {
-        uploadDir += "/covers";
+        String coverUploadDir = uploadDir + "/covers";
         try {
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Paths.get(coverUploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
@@ -47,9 +46,9 @@ public class ImageUploadController {
 
     @PostMapping("/profile-images")
     public ResponseEntity<String> uploadProfileImage(@RequestParam MultipartFile file) {
-        uploadDir += "/profile-images";
+        String coverUploadDir = uploadDir + "/profile-images";
         try {
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Paths.get(coverUploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }

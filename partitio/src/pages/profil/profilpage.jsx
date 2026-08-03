@@ -78,7 +78,7 @@ function Profil() {
             })
     }
 
-    const updateProfile = async = (e) => {
+    const updateProfile = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append("file", file);

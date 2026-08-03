@@ -41,15 +41,13 @@ $blue: #0f5ad7;
 
     padding: 20px;
 
-    height: 100%;
-    min-height: 350px;
-    max-height: 350px;
-
-    width: fit-content;
-    min-width: 350px;
-    max-width: 350px;
+    height: 350px;
+    width: 350px;
 
     background-color: $paper;
+    
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
 
     hr {
         background-color: $green-800;

@@ -59,6 +59,8 @@ function AddPieceButton() {
 
         console.log(imagePath);
         console.log(form);
+        close();
+        window.location.reload();
     };
 
     return (

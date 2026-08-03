@@ -2,8 +2,23 @@ import "./menuPiece.scss";
 
 import { Menu, ActionIcon } from "@mantine/core";
 import { DotsThreeIcon, PencilIcon, FileTextIcon, ShareFatIcon, StarIcon, TrashIcon } from "@phosphor-icons/react";
+import { useState } from "react";
 
-function MenuPiece() {
+
+function MenuPiece({ id }) {
+    const [value, setValue] = useState(0);
+    const handleClick = () => {
+        fetch('api/pieces/' + id, {
+            method: "DELETE",
+            credentials: "same-origin"
+        }).then(response => {
+            if (!response.ok) throw new Error();
+            return response.json();
+        }).then(res => console.log(res))
+        .catch(() => setValue(0));
+        window.location.reload();
+    }
+
     return (
         <Menu shadow="md" width={220}>
             <Menu.Target>
@@ -31,7 +46,7 @@ function MenuPiece() {
 
                 <Menu.Divider />
 
-                <Menu.Item color="red" leftSection={<TrashIcon />}>
+                <Menu.Item color="red" leftSection={<TrashIcon />} onClick={handleClick}>
                     Supprimer
                 </Menu.Item>
 
