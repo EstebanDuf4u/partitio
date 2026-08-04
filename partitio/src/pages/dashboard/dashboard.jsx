@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import { Input } from '@mantine/core';
 import { MagnifyingGlassIcon, MusicNoteIcon, UsersIcon, FileTextIcon, PlusIcon } from '@phosphor-icons/react';
 
+import FETCH_BASE_URL from '../../fetch_url';
+
 function Dashboard() {
     const [search, setSearch] = useState("");
     const [user, setUser] = useState(null);
@@ -20,7 +22,7 @@ function Dashboard() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/api/me', {
+        fetch(FETCH_BASE_URL + '/api/me', {
             credentials: 'same-origin'
         })
             .then(response => {
@@ -30,26 +32,27 @@ function Dashboard() {
             .then(({ user }) => {
                 setUser(user)
             })
-            .catch(() => navigate('/login', { 
-                replace: true, 
-                state: {from: location.pathname}}))
+            .catch(() => navigate('/login', {
+                replace: true,
+                state: { from: location.pathname }
+            }))
     }, [navigate]);
 
     useEffect(() => {
-        fetch('api/pieces', {
+        fetch(FETCH_BASE_URL + 'api/pieces', {
             credentials: "same-origin"
         }).then(response => {
             if (!response.ok) throw new Error();
             return response.json();
         }).then((data) => {
             setPieces(data);
-            setLastPieces(data.slice(0,5));
+            setLastPieces(data.slice(0, 5));
         }).catch(() => {
             setPieces([]);
             setLastPieces([]);
         });
 
-        fetch('api/documents', {
+        fetch(FETCH_BASE_URL + '/api/documents', {
             credentials: "same-origin"
         }).then(response => {
             if (!response.ok) throw new Error();
@@ -59,7 +62,7 @@ function Dashboard() {
         }).catch(() => setNbreDocuments(0));
         const date = Date.now();
         console.log(date);
-        
+
     }, []);
 
     if (!user) return null;

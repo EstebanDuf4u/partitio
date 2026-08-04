@@ -3,9 +3,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import './login.scss'
 import LeftPanel from '../../../components/leftPanel/leftPanel'
 
+import FETCH_BASE_URL from '../../../fetch_url'
+
 const initialForm = {
-    email: '',
-    password: '',
+    email: 'bob@gmail.co.uk',
+    password: 'azertyuiop',
 }
 
 function Login() {
@@ -56,9 +58,9 @@ function Login() {
         setIsSubmitting(true)
 
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch(FETCH_BASE_URL + '/api/login', {
                 method: 'POST',
-                credentials: 'same-origin',
+                // credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -78,7 +80,8 @@ function Login() {
             setForm(initialForm)
             setSubmitted(false)
             setStatus({ type: 'success', message: 'Connexion reussie.' })
-            navigate(originalUrl, {replace:true})
+
+            navigate('/dashboard') // , { replace: true }
         } catch {
             setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
         } finally {

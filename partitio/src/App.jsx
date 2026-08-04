@@ -19,9 +19,9 @@ function App() {
         <Route path="/piece" element={<Piece />} />
         <Route path="/profilpage" element={<Profil />} />
         <Route path="/documents" element={<Documents />} />
-        <Route path="/ensembles" element={<Ensemble />}/>
-        <Route path="/users" element={<Users />}/>
-        <Route path="/roles" element={<Roles />}/>
+        <Route path="/ensembles" element={<Ensemble />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/roles" element={<Roles />} />
       </Routes>
     </BrowserRouter>
   )

@@ -33,6 +33,12 @@ public class SignupController {
     this.userRepository = userRepository;
   }
 
+  /**
+   * Méthode appelée pour la création d'un nouvel utilisateur
+   * 
+   * @param request
+   * @return
+   */
   @PostMapping
   public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest request) {
     if (!request.terms()) {
@@ -52,15 +58,20 @@ public class SignupController {
           request.terms(),
           emailVerificationToken,
           emailVerificationExpiresAt,
-        false);
+          false);
       user = userRepository.save(user);
 
+      // TODO URL en dur, attention, à voir pour mettre dans une variable
+      // d'environnement
       var verificationLink = "http://localhost:8081/api/verify-email?token=" + emailVerificationToken;
 
       return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
           "user", UserResponse.from(user),
           "verificationLink", verificationLink));
     } catch (DataIntegrityViolationException error) {
+
+      // erreur 409 (HTTP conflict) si duplication de données définie comme unique en
+      // BDD
       return ResponseEntity.status(HttpStatus.CONFLICT)
           .body(new ErrorResponse("Cette adresse mail est deja utilisee."));
     }
