@@ -4,6 +4,8 @@ import { useDisclosure } from '@mantine/hooks';
 import { PlusIcon, ImageBrokenIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from "react";
 
+import FETCH_BASE_URL from '../../fetch_url.js';
+
 function AddPieceButton( { onPieceAdded }) {
     const [opened, { open, close }] = useDisclosure(false);
     const [file, setFile] = useState(null);
@@ -37,7 +39,7 @@ function AddPieceButton( { onPieceAdded }) {
         ImageformData.append("file", file);
         ImageformData.append("title", title);
 
-        const responseImage = await fetch("http://localhost:3000/api/uploads/covers", {
+        const responseImage = await fetch(FETCH_BASE_URL + "/api/uploads/covers", {
             method: "POST",
             body: ImageformData,
         });
@@ -51,7 +53,7 @@ function AddPieceButton( { onPieceAdded }) {
         formData.append("description", description);
         formData.append("coverUrl", imagePath)
 
-        const responseFormData = await fetch("http://localhost:3000/api/pieces", {
+        const responseFormData = await fetch(FETCH_BASE_URL + "/api/pieces", {
             method: "POST",
             body: formData,
         });
@@ -75,7 +77,7 @@ function AddPieceButton( { onPieceAdded }) {
                             <div className="infoGrid">
                                 <div className="pieceTitle">
                                     <p>Titre du morceau</p>
-                                    <TextInput placeholder="Ex: Hallelujah" value={title} onChange={(event) => setTitle(event.currentTarget.value)} required withAsterisk/>
+                                    <TextInput placeholder="Ex: Hallelujah" value={title} onChange={(event) => setTitle(event.currentTarget.value)} required withAsterisk />
                                 </div>
                                 <div className="artiste">
                                     <p>Compositeur / Artiste</p>

@@ -44,6 +44,11 @@ Pour supprimer aussi le volume PostgreSQL et repartir d'une base vide :
 docker compose down -v
 ```
 
+Il est possible de démarrer uniquement la BDD grâce au fichier `docker-compose.db.yml` et en utilisant la commande suivante :
+```sh
+docker compose -f docker-compose.db.yml up -d
+```
+
 ## Structure du projet
 
 ```text

@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { Input } from '@mantine/core';
 import { PlusIcon, MagnifyingGlassIcon } from '@phosphor-icons/react';
 
+import FETCH_BASE_URL from '../../fetch_url';
+
 function Piece() {
     const [search, setSearch] = useState("");
     const [pieces, setPieces] = useState([]);
@@ -17,7 +19,7 @@ function Piece() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/api/me', {
+        fetch(FETCH_BASE_URL + '/api/me', {
             credentials: 'same-origin'
         })
             .then(response => {
@@ -27,9 +29,10 @@ function Piece() {
             .then(({ user }) => {
                 setUser(user);
             })
-            .catch(() => navigate('/login', { 
-                replace: true, 
-                state: {from: location.pathname}}))
+            .catch(() => navigate('/login', {
+                replace: true,
+                state: { from: location.pathname }
+            }))
     }, [navigate])
 
 

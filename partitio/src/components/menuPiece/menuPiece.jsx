@@ -4,11 +4,12 @@ import { Menu, ActionIcon } from "@mantine/core";
 import { DotsThreeIcon, PencilIcon, FileTextIcon, ShareFatIcon, StarIcon, TrashIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 
+import FETCH_BASE_URL from '../../fetch_url';
 
 function MenuPiece({ id, onPieceDeleted }) {
     const [value, setValue] = useState(0);
     const handleClick = () => {
-        fetch('api/pieces/' + id, {
+        fetch(FETCH_BASE_URL + '/api/pieces/' + id, {
             method: "DELETE",
             credentials: "same-origin"
         }).then(response => {

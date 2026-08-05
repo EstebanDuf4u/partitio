@@ -5,6 +5,8 @@ import { PenIcon, TrashIcon, EnvelopeIcon, PhoneIcon, MapPinIcon } from "@phosph
 import Voice from '../../components/voice/voice';
 import { useNavigate } from 'react-router-dom';
 
+import FETCH_BASE_URL from '../../fetch_url';
+
 const initialForm = {
     firstName: '',
     lastName: '',
@@ -25,7 +27,7 @@ function Profil() {
     const [file, setFile] = useState(null);
 
     useEffect(() => {
-        fetch('/api/me', {
+        fetch(FETCH_BASE_URL + '/api/me', {
             credentials: 'same-origin'
         })
             .then(response => {
@@ -59,7 +61,7 @@ function Profil() {
             return
         }
 
-        fetch('/api/me', {
+        fetch(FETCH_BASE_URL + '/api/me', {
             method: 'DELETE',
             credentials: 'include'
         })
@@ -88,7 +90,7 @@ function Profil() {
         })
 
         const imagePath = await responseImage.text();
-
+        g
         console.log(imagePath);
         //     .then(response => {
         //     if (!response.ok) {

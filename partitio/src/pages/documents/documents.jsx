@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import FETCH_BASE_URL from '../../fetch_url';
 
-
-function Users() {
+function Documents() {
     const [user, setUser] = useState(null)
     const navigate = useNavigate()
 
@@ -31,9 +30,9 @@ function Users() {
     return (
         <>
             <LeftPanel user={user} />
-            <h1>PAGE Users</h1>
+            <h1>PAGE Documents</h1>
         </>
     )
 }
 
-export default Users;
+export default Documents;

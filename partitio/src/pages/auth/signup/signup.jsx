@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom'
 import './signup.scss'
 import LeftPanel from '../../../components/leftPanel/leftPanel'
 
+import FETCH_BASE_URL from '../../../fetch_url.js'
+
 const initialForm = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  terms: false,
+  firstName: 'Bob',
+  lastName: 'Bob',
+  email: 'bob@gmail.fr',
+  password: 'azertyuiop',
+  confirmPassword: 'azertyuiop',
+  terms: true,
 }
 
 function SignUp() {
@@ -71,7 +73,7 @@ function SignUp() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/signup', {
+      const response = await fetch(FETCH_BASE_URL + '/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
