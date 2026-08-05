@@ -5,7 +5,7 @@ import { DotsThreeIcon, PencilIcon, FileTextIcon, ShareFatIcon, StarIcon, TrashI
 import { useState } from "react";
 
 
-function MenuPiece({ id }) {
+function MenuPiece({ id, onPieceDeleted }) {
     const [value, setValue] = useState(0);
     const handleClick = () => {
         fetch('api/pieces/' + id, {
@@ -13,10 +13,8 @@ function MenuPiece({ id }) {
             credentials: "same-origin"
         }).then(response => {
             if (!response.ok) throw new Error();
-            return response.json();
-        }).then(res => console.log(res))
-        .catch(() => setValue(0));
-        window.location.reload();
+            onPieceDeleted();
+        }).catch(() => setValue(0));
     }
 
     return (

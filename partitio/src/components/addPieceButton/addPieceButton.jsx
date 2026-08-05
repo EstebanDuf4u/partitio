@@ -4,7 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { PlusIcon, ImageBrokenIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from "react";
 
-function AddPieceButton() {
+function AddPieceButton( { onPieceAdded }) {
     const [opened, { open, close }] = useDisclosure(false);
     const [file, setFile] = useState(null);
     const [path, setPath] = useState(null);
@@ -60,7 +60,9 @@ function AddPieceButton() {
         console.log(imagePath);
         console.log(form);
         close();
-        window.location.reload();
+        if(onPieceAdded) {
+            onPieceAdded();
+        }
     };
 
     return (

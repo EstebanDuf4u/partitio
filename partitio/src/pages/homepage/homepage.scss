@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+$green-950: #0f3d31;
+$green-900: #123f34;
+
+$light-green: #e6ede1;
+$green-800: #185947;
+
+$light-orange: #ffedd2;
+$orange: #fd8219;
+
+$light-purple: #efe7f2;
+$purple: #552bb7;
+
+$light-blue: #dee7f2;
+$blue: #0f5ad7;
+
+$cream: #f7f2ea;
+$paper: #fffaf2;
+$gold: #d49a20;
+$text: #17372f;
+$muted: #6f7b75;
+$border: #e8dccb;
+$danger: #c4362e;
+
+.homepage {
+    display: flex;
+    flex-direction: column;
+
+    padding: 5px;
+    background-color: $cream;
+
+    height: 100%;
+    width: 100%;
+
+    .top {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        padding: 10px 25px;
+
+        width: 100%;
+        height: fit-content;
+
+        border-bottom: 2px solid $border;
+
+        .logo {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            align-self: start;
+
+            width: fit-content;
+            height: fit-content;
+
+            img {
+                height: 70px;
+                width: 64px;
+            }
+
+            p {
+                font-family: 'Cormorant Garamond';
+                font-size: 52px;
+                color: $text;
+                line-height: 1;
+                margin: 0;
+            }
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: row;
+            column-gap: 25px;
+
+            width: fit-content;
+            height: fit-content;
+
+            .loginBtn,
+            .registerBtn {
+                width: 150px;
+                height: 40px;
+                border-radius: 10px;
+
+                align-items: center;
+                justify-content: center;
+
+                cursor: pointer;
+                text-decoration: none;
+                border: none;
+            }
+
+            .loginBtn {
+                background-color: $green-950;
+                color: $cream;
+            }
+
+            .registerBtn {
+                background-color: $cream;
+                border: 1px solid $border;
+            }
+        }
+    }
+
+    .bottom {
+        display: flex;
+        flex-direction: column;
+
+        padding: 10px 25px;
+        justify-content: space-around;
+
+        width: 100%;
+        height: 100%;
+
+        .hero {
+            display: flex;
+            flex-direction: row;
+
+            align-items: center;
+            justify-content: space-around;
+
+            column-gap: 30px;
+
+            width: 100%;
+            height: fit-content;
+            
+            .leftText {
+                display: flex;
+                flex-direction: column;
+                row-gap: 25px;
+
+                height: fit-content;
+                width: fit-content;
+                max-width: 530px;
+
+                p {
+                    color: $green-950;
+                    font-family: "Inter";
+                    font-size: 18px;
+                    font-weight: 400;
+                    line-height: 1.5;
+                }
+                .topText {
+                        font-size: 36px;
+                        line-height: 1;
+
+                    span {
+                        color: $gold;
+                    }
+                }
+            }
+
+            img {
+                width: 900px;
+                border: 3px solid $border;
+                border-radius: 15px;
+            }
+        }
+
+        .cards {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+
+            height: 150px;
+            width: 100%;
+
+            .card {
+                display: flex;
+                flex-direction: row;
+
+                align-items: center;
+                justify-content: center;
+
+                column-gap: 25px;
+                padding: 10px;
+
+                height: 100%;
+                max-height: 100px;
+                width: 100%;
+                max-width: 250px;
+
+                border: 1px solid $border;
+
+                svg {                    
+                    border-radius: 20px;
+                    padding: 10px;
+
+                    height: fit-content;
+                    width: fit-content;
+                }
+
+                .text {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 5px;
+
+                    width: fit-content;
+                    height: fit-content;
+
+                    .firstLine, .secondLine {
+                        font-family: "Inter";
+                        line-height: 1;
+                    }
+                    
+                    .firstLine {
+                        font-size: 16px;
+                        font-weight: 700;
+                    }
+                    .secondLine {
+                        font-size: 12px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            .card.green {
+                svg {
+                    color: $green-800;
+                    background-color: $light-green;
+                }
+            }
+            .card.orange {
+                svg {
+                    color: $orange;
+                    background-color: $light-orange;
+                }
+            }
+            .card.purple {
+                svg {
+                    color: $purple;
+                    background-color: $light-purple;
+                }
+            }
+            .card.blue {
+                svg {
+                    color: $blue;
+                    background-color: $light-blue;
+                }
+            }
+        }
+    }
+}

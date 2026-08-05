@@ -32,15 +32,20 @@ function Piece() {
                 state: {from: location.pathname}}))
     }, [navigate])
 
-    useEffect(() => {
+
+    const loadPieces = () => {
         fetch('api/pieces', {
-            credentials: "same-origin"
-        }).then(response => {
-            if (!response.ok) throw new Error();
-            return response.json();
-        }).then((data) => {
-            setPieces(data);
-        }).catch(() => setPieces([]));
+                credentials: "same-origin"
+            }).then(response => {
+                if (!response.ok) throw new Error();
+                return response.json();
+            }).then((data) => {
+                setPieces(data);
+            }).catch(() => setPieces([]));
+    }
+
+    useEffect(() => {
+        loadPieces();
     }, [])
 
     if (!user) return null
@@ -59,12 +64,12 @@ function Piece() {
                     <div className="recherche">
                         <Input placeholder="Rechercher un morceau" leftSection={<MagnifyingGlassIcon size={32} />} />
                     </div>
-                    <AddPieceButton />
+                    <AddPieceButton onPieceAdded={loadPieces}/>
                 </div>
                 <div className="cards">
                     {/* {...pieces} permet de ne pas écrire :
                     <Card coverSrc={morceau.coverSrc} title={morceau.title} artist={morceau.artist} voices={morceau.voices} modifDate={morceau.modifDate} /> */}
-                    {pieces.map((piece) => <Card key={`${piece.title}-${piece.artist}`} {...piece} />)}
+                    {pieces.map((piece) => <Card key={`${piece.title}-${piece.artist}`} {...piece} onPieceDeleted={loadPieces} />)}
                 </div>
             </div>
         </div>
