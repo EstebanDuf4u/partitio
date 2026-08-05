@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -45,20 +46,46 @@ public class ImageUploadController {
     }
 
     @PostMapping("/profile-images")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam MultipartFile file) {
-        String coverUploadDir = uploadDir + "/profile-images";
+    public ResponseEntity<String> uploadProfileImage(
+            @RequestParam("file") MultipartFile file) {
+
+        String profileUploadDir = uploadDir + "/profile-images";
+
         try {
-            Path uploadPath = Paths.get(coverUploadDir);
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body("Aucune image envoyée");
+            }
+
+            Path uploadPath = Paths.get(profileUploadDir);
+
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            String Filename = file.getOriginalFilename();
+            String originalFilename = file.getOriginalFilename();
 
-            Files.copy(file.getInputStream(), uploadPath.resolve(Filename), StandardCopyOption.REPLACE_EXISTING);
-            return ResponseEntity.ok("/uploads/profile-images/" + Filename);
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body("Erreur d'upload");
+            if (originalFilename == null || !originalFilename.contains(".")) {
+                return ResponseEntity.badRequest()
+                        .body("Nom de fichier invalide");
+            }
+
+            String extension = originalFilename.substring(
+                    originalFilename.lastIndexOf("."));
+
+            String filename = UUID.randomUUID() + extension;
+
+            Files.copy(
+                    file.getInputStream(),
+                    uploadPath.resolve(filename),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            return ResponseEntity.ok(
+                    "/uploads/profile-images/" + filename);
+
+        } catch (IOException exception) {
+            return ResponseEntity.internalServerError()
+                    .body("Erreur d'upload");
         }
     }
 }

@@ -28,6 +28,18 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "town")
+    private String town;
+
+    @Column(name = "voice_type")
+    private String voiceType;
+
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
@@ -52,7 +64,8 @@ public class User {
     protected User() {
     }
 
-    public User(String firstName, String lastName, String email, String passwordHash, boolean acceptedTerms, String emailVerificationToken, OffsetDateTime emailVerificationExpiresAt, boolean is_admin) {
+    public User(String firstName, String lastName, String email, String passwordHash, boolean acceptedTerms,
+            String emailVerificationToken, OffsetDateTime emailVerificationExpiresAt, boolean is_admin) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -93,6 +106,38 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    public String getVoiceType() {
+        return voiceType;
+    }
+
+    public void setVoiceType(String voiceType) {
+        this.voiceType = voiceType;
     }
 
     public String getPasswordHash() {

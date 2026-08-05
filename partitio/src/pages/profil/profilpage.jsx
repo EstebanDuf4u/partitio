@@ -37,12 +37,15 @@ function Profil() {
             .then(({ user }) => {
                 setUser(user)
 
-                setForm(form => ({
-                    ...form,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email
-                }))
+                setForm({
+                    firstName: user.firstName ?? '',
+                    lastName: user.lastName ?? '',
+                    email: user.email ?? '',
+                    phone: user.phone ?? '',
+                    town: user.town ?? '',
+                    voiceType: user.voiceType ?? '',
+                    image: user.profileImageUrl ?? ''
+                })
             })
             .catch(() => navigate('/login', {
                 replace: true,
@@ -80,32 +83,80 @@ function Profil() {
             })
     }
 
-    const updateProfile = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("file", file);
-        fetch('/api/uploads/profile-images', {
-            method: "POST",
-            body: ImageformData,
-        })
+    const updateProfile = async (event) => {
+        event.preventDefault()
 
-        const imagePath = await responseImage.text();
-        g
-        console.log(imagePath);
-        //     .then(response => {
-        //     if (!response.ok) {
-        //         throw new Error('Impossible de modifier le profil')
-        //     }
+        try {
+            let imagePath = user?.profileImageUrl ?? null
 
-        //     return response.json()
-        // })
-        // .then(({ user }) => {
-        //     setUser(user)
-        //     setIsEditing(false)
-        // })
-        // .catch(error => {
-        //     console.error(error)
-        // })
+            if (profileImage) {
+                const imageFormData = new FormData()
+                imageFormData.append('file', profileImage)
+
+                const responseImage = await fetch(FETCH_BASE_URL + '/api/uploads/profile-images', {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: imageFormData
+                })
+
+                if (!responseImage.ok) {
+                    throw new Error("Impossible d'enregistrer l'image")
+                }
+
+                imagePath = await responseImage.text()
+            }
+
+            const response = await fetch(FETCH_BASE_URL + '/api/me', {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    firstName: form.firstName,
+                    lastName: form.lastName,
+                    email: form.email,
+                    profileImageUrl: imagePath,
+                    phone: form.phone,
+                    town: form.town,
+                    voiceType: form.voiceType
+                })
+            })
+
+            if (!response.ok) {
+                throw new Error('Impossible de modifier le profil')
+            }
+
+            const data = await response.json()
+
+            setUser(data.user)
+
+            setForm({
+                firstName: data.user.firstName ?? '',
+                lastName: data.user.lastName ?? '',
+                email: data.user.email ?? '',
+                phone: data.user.phone ?? '',
+                town: data.user.town ?? '',
+                voiceType: data.user.voiceType ?? '',
+                image: data.user.profileImageUrl ?? ''
+            })
+            setProfileImage(null)
+            setIsEditing(false)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const getProfileImageUrl = () => {
+        if (profileImage) {
+            return URL.createObjectURL(profileImage)
+        }
+
+        if (user?.profileImageUrl) {
+            return `http://localhost:3000${user.profileImageUrl}`
+        }
+
+        return '/utilisateurtest.jpg'
     }
 
     return (
@@ -124,8 +175,14 @@ function Profil() {
                             >
                                 <img
                                     className="profil-image"
-                                    src={profileImage ? URL.createObjectURL(profileImage) : '/utilisateurtest.jpg'}
+                                    src={getProfileImageUrl()}
                                     alt="Photo de profil"
+                                    onError={(event) => {
+                                        console.error(
+                                            "Impossible de charger l'image :",
+                                            event.currentTarget.src
+                                        )
+                                    }}
                                 />
 
                                 {isEditing && (
@@ -204,7 +261,7 @@ function Profil() {
                                     </>
                                 ) : (
                                     <>
-                                        {form.voiceType ? <Voice voice={form.voiceType} nbreVoice={1} /> : <Voice voice={"Soprano"} nbreVoice={1} />}
+                                        {user?.voiceType ? <Voice voice={user.voiceType} nbreVoice={1} /> : <Voice voice={"Soprano"} nbreVoice={1} />}
                                     </>
                                 )}
 
@@ -241,7 +298,7 @@ function Profil() {
                                             }
                                         /></>
                                 ) : (
-                                    <p className="userPhone"><PhoneIcon />Numéro de téléphone</p>)}
+                                    <p className="userPhone"><PhoneIcon />{user?.phone || 'Numéro de téléphone'}</p>)}
                                 <hr />
                                 {isEditing ? (
                                     <>
@@ -259,7 +316,7 @@ function Profil() {
                                         />
                                     </>
                                 ) : (
-                                    <p className="userTown"><MapPinIcon />Ville</p>)}
+                                    <p className="userTown"><MapPinIcon />{user?.town || 'Ville'}</p>)}
                             </div>
 
                             <div className="buttonsCard">

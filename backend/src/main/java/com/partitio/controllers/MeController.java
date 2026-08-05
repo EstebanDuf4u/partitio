@@ -75,6 +75,15 @@ public class MeController {
           user.setLastName(request.lastName().trim());
           user.setEmail(request.email().trim().toLowerCase());
 
+          if (request.profileImageUrl() != null
+              && !request.profileImageUrl().isBlank()) {
+            user.setProfileImageUrl(request.profileImageUrl());
+          }
+
+          user.setPhone(request.phone());
+          user.setTown(request.town());
+          user.setVoiceType(request.voiceType());
+
           var updatedUser = userRepository.save(user);
 
           return ResponseEntity.ok(
