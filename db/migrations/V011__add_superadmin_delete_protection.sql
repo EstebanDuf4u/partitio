@@ -11,7 +11,7 @@ BEGIN
 END;
 $$;
 
-CREATE TRIGGER superadmin_delete_protection
+CREATE TRIGGER trigger_superadmin_delete_protection
 BEFORE DELETE ON users
 FOR EACH ROW
-EXECUTE FUNCTION trigger_superadmin_delete_protection();
+EXECUTE FUNCTION superadmin_delete_protection();
