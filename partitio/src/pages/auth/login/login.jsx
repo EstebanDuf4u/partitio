@@ -60,7 +60,7 @@ function Login() {
         try {
             const response = await fetch(FETCH_BASE_URL + '/api/login', {
                 method: 'POST',
-                // credentials: 'include',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -81,7 +81,7 @@ function Login() {
             setSubmitted(false)
             setStatus({ type: 'success', message: 'Connexion reussie.' })
 
-            navigate('/dashboard') // , { replace: true }
+            navigate(originalUrl, { replace: true })
         } catch {
             setStatus({ type: 'error', message: 'Impossible de joindre le serveur.' })
         } finally {
