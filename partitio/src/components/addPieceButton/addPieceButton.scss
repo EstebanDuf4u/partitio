@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+$green-950: #0f3d31;
+$green-900: #123f34;
+
+$border: #e8dccb;
+$cream: #f7f2ea;
+$cream-svg: invert(94%) sepia(16%) saturate(391%) hue-rotate(311deg) brightness(106%) contrast(94%);
+$danger: #c4362e;
+$gold: #d49a20;
+$muted: #6f7b75;
+$muted-svg: invert(48%) sepia(9%) saturate(344%) hue-rotate(97deg) brightness(95%) contrast(87%);
+$paper: #fffaf2;
+$paper-svg: invert(84%) sepia(3%) saturate(1252%) hue-rotate(323deg) brightness(119%) contrast(102%);
+$text: #17372f;
+
+$gray: #93938f;
+$light-gray: #f2eae1;
+
+$light-green: #e6ede1;
+$green-800: #185947;
+
+$light-orange: #ffedd2;
+$orange: #fd8219;
+
+$light-purple: #efe7f2;
+$purple: #552bb7;
+
+$light-blue: #dee7f2;
+$blue: #0f5ad7;
+
+.modalAddPiece {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    height: 100%;
+    width: 100%;
+    row-gap: 15px;
+    box-sizing: border-box;
+
+    p {
+        font-family: "Inter";
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 1;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        row-gap: 15px;
+        padding: 15px;
+
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+
+        .top {
+            display: flex;
+            flex-direction: column;
+            row-gap: 15px;
+
+            width: 100%;
+            height: fit-content;
+
+            p {
+                font-size: 24px;
+                font-weight: 400;
+            }
+
+            .infoGrid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: auto auto;
+
+                row-gap: 15px;
+                column-gap: 25px;
+
+                height: fit-content;
+                width: 100%;
+
+                align-items: end;
+
+                .pieceTitle,
+                .artiste,
+                .category,
+                .language {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 5px;
+
+                    height: fit-content;
+                    width: 100%;
+
+                    p {
+                        font-size: 18px;
+                        font-weight: 400;
+                    }
+
+                    input {
+                        border: 2px solid $border;
+                        height: 50px;
+                        width: 100%;
+                        border-radius: 10px;
+                        box-sizing: border-box;
+                    }
+                }
+            }
+        }
+
+        .desc {
+            display: flex;
+            flex-direction: column;
+            row-gap: 5px;
+
+            height: fit-content;
+            width: 100%;
+
+            p {
+                font-size: 18px;
+                font-weight: 400;
+            }
+
+            textarea {
+                border: 2px solid $border;
+                min-height: 120px;
+                width: 100%;
+                border-radius: 10px;
+                box-sizing: border-box;
+                resize: vertical;
+            }
+        }
+
+        .cover {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            row-gap: 5px;
+
+            height: fit-content;
+            width: fit-content;
+
+            p {
+                font-size: 18px;
+                font-weight: 400;
+            }
+
+            svg {
+                height: 64px;
+                width: 64px;
+            }
+
+            button {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                padding: 15px;
+                height: 50px;
+                width: fit-content;
+
+                background-color: $light-green;
+                border-radius: 10px;
+
+                span {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: $green-800;
+                }
+            }
+
+            .imagePreview {
+                width: 100%;
+                max-width: 250px;
+                max-height: 250px;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+        }
+    }
+
+
+
+    hr {
+        background-color: $gray;
+        height: 2px;
+        width: 100%;
+    }
+
+    .bottomButtons {
+        display: flex;
+        flex-direction: row;
+        column-gap: 15px;
+
+        height: fit-content;
+        width: fit-content;
+
+        align-self: end;
+
+        .annulerBtn,
+        .terminerBtn {
+            display: flex;
+            flex-direction: row;
+
+            height: fit-content;
+            width: fit-content;
+
+            padding: 15px 30px;
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            p {
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 1;
+            }
+        }
+
+        .annulerBtn {
+            border: 2px solid $border;
+
+            p {
+                color: black;
+            }
+        }
+
+        .terminerBtn {
+            background-color: $green-950;
+
+            p {
+                color: white;
+            }
+        }
+    }
+}
+
+.addPiece {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    background-color: $green-950;
+    border-radius: 10px;
+
+    column-gap: 10px;
+    padding: 10px;
+
+    height: fit-content;
+    max-height: 50px;
+    width: fit-content;
+    max-width: 250px;
+
+    cursor: pointer;
+
+    svg {
+        height: 24px;
+        width: 24px;
+        color: $paper;
+    }
+
+    p {
+        color: $paper;
+        font-family: "Inter";
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 1;
+    }
+}

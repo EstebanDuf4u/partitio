@@ -27,7 +27,6 @@ $danger: #c4362e;
 
     width: 100%;
     max-width: 250px;
-    height: 100%;
 }
 
 .group {
@@ -39,12 +38,17 @@ $danger: #c4362e;
     height: fit-content;
 }
 
-.texte {
+.texteLogo {
     display: flex;
     flex-direction: column;
     row-gap: 25px;
 
     height: fit-content;
+
+    cursor: pointer;
+
+    text-decoration: none;
+    color: inherit;
 
     p {
         color: $muted;
@@ -127,6 +131,9 @@ $danger: #c4362e;
     
     border-radius: 10px;
     background-color: $green-800;
+
+    text-decoration: none;
+    color: inherit;
     
     cursor: pointer;
 

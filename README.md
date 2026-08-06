@@ -4,6 +4,8 @@ Partitio est une application React + Java Spring Boot avec une base PostgreSQL. 
 
 ## Demarrage rapide
 
+Remplir le .env avec le .env.example, et le mettre dans le bon dossier partitio
+
 Depuis la racine du projet :
 
 ```bash
@@ -40,6 +42,11 @@ Pour supprimer aussi le volume PostgreSQL et repartir d'une base vide :
 
 ```bash
 docker compose down -v
+```
+
+Il est possible de démarrer uniquement la BDD grâce au fichier `docker-compose.db.yml` et en utilisant la commande suivante :
+```sh
+docker compose -f docker-compose.db.yml up -d
 ```
 
 ## Structure du projet
@@ -205,6 +212,31 @@ Configuration technique :
 PasswordConfig.java  # BCryptPasswordEncoder
 WebConfig.java       # CORS pour /api/**
 ```
+
+### Tests backend
+
+Les tests unitaires Java sont dans :
+
+```text
+backend/src/test/java/
+```
+
+Ils couvrent les controleurs, DTO, configuration, service JWT et repository backend avec JUnit 5, Mockito et Spring Boot Test.
+
+Lancer les tests backend :
+
+```bash
+cd backend
+mvn test
+```
+
+Un rapport de couverture JaCoCo est genere pendant les tests :
+
+```text
+backend/target/site/jacoco/index.html
+```
+
+Les tests Java couvrent le backend Spring Boot. Le frontend React/Vite n'est pas couvert par ces tests Java.
 
 ### Endpoints backend
 

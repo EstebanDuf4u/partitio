@@ -1,9 +1,13 @@
 import "./ensemble.scss"
-function Ensemble({name, title, path, color}) {
+import { ImageBrokenIcon } from '@phosphor-icons/react';
+
+function Ensemble({ name, title, path, color }) {
+    const hasImage = Boolean(path);
+
     return (
         <div className="ensemble">
             <div className={`ensembleImage ${color}`}>
-                {path == "null" ? <img src="/image-missing.svg" alt={name} /> : <img src={path} alt={name} />}
+                {hasImage ? <img src={path} alt={name} /> : <ImageBrokenIcon />}
             </div>
             <div className="ensembleTexte">
                 <p id="ensembleName">{name}</p>

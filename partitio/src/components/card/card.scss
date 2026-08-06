@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+$green-950: #0f3d31;
+$green-900: #123f34;
+
+$border: #e8dccb;
+$cream: #f7f2ea;
+$cream-svg: invert(94%) sepia(16%) saturate(391%) hue-rotate(311deg) brightness(106%) contrast(94%);
+$danger: #c4362e;
+$gold: #d49a20;
+$muted: #6f7b75;
+$muted-svg: invert(48%) sepia(9%) saturate(344%) hue-rotate(97deg) brightness(95%) contrast(87%);
+$paper: #fffaf2;
+$text: #17372f;
+
+$gray: #93938f;
+$light-gray: #f2eae1;
+
+$light-green: #e6ede1;
+$green-800: #185947;
+
+$light-orange: #ffedd2;
+$orange: #fd8219;
+
+$light-purple: #efe7f2;
+$purple: #552bb7;
+
+$light-blue: #dee7f2;
+$blue: #0f5ad7;
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 18px;
+
+    border-radius: 10px;
+    border: 2px solid $border;
+
+    padding: 20px;
+
+    height: 350px;
+    width: 350px;
+
+    background-color: $paper;
+    
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+
+    hr {
+        background-color: $green-800;
+        height: 2px;
+        width: 100%;
+    }
+}
+
+.imgText {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 15px;
+
+    height: fit-content;
+    width: fit-content;
+
+    img {
+        height: 128px;
+        width: 128px;
+
+        border: 2px solid $border;
+    }
+
+    .songName {
+        display: flex;
+        flex-direction: column;
+
+        width: fit-content;
+        height: 100%;
+
+        p {
+            font-family: "Inter";
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1;
+            color: $muted;
+        }
+
+        #title {
+            color: $text;
+            font-size: 36px;
+        }
+    }
+}
+
+.typeVoice {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    row-gap: 10px;
+    column-gap: 10px;
+
+    align-items: center;
+}
+
+.date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 15px;
+
+    width: 100%;
+    height: fit-content;
+
+    p {
+        color: $muted;
+        font-family: "Inter";
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 1;
+    }
+}

@@ -1,0 +1,55 @@
+$green-800: #185947;
+$light-green: #e6ede1;
+
+
+.joinCreateButton {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    width: 100%;
+}
+.boutonBottom {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+
+    padding: 10px;
+
+    height: fit-content;
+    width: fit-content;
+
+    background-color: $light-green;
+    border: 2px solid $green-800;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    svg {
+        height: 24px;
+        width: 24px;
+
+        color: $green-800;
+    }
+
+    .boutonTexte {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        p {
+            font-family: "Inter";
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1;
+            color: $green-800;
+        }
+    }
+}
