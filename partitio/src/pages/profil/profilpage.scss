@@ -34,7 +34,61 @@ $danger: #c4362e;
     border-radius: 150px;
 }
 
-.userFirstNameInput {}
+.userFirstNameInput,
+.userLastNameInput,
+.userEmailInput,
+.userPhoneInput,
+.userTownInput,
+#voiceSelect {
+    width: 100%;
+    min-height: 42px;
+    padding: 0 14px;
+
+    border: 2px solid #e5d7c6;
+    border-radius: 10px;
+
+    background-color: #fffaf2;
+    color: #17372f;
+
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+
+    box-sizing: border-box;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+
+    &::placeholder {
+        color: #8b918e;
+        opacity: 1;
+    }
+
+    &:hover {
+        border-color: #d4c3ad;
+    }
+
+    &:focus {
+        border-color: $green-800;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba($green-800, 0.12);
+    }
+}
+
+.userName {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.userFirstNameInput,
+.userLastNameInput {
+    min-width: 0;
+    flex: 1;
+}
 
 .profil-brand {
     min-height: 100svh;
