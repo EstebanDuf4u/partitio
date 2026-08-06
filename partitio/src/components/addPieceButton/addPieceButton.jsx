@@ -41,6 +41,7 @@ function AddPieceButton() {
 
         const responseImage = await fetch(FETCH_BASE_URL + "/api/uploads/covers", {
             method: "POST",
+            credentials: "include",
             body: ImageformData,
         });
 
@@ -55,6 +56,7 @@ function AddPieceButton() {
 
         const responseFormData = await fetch(FETCH_BASE_URL + "/api/pieces", {
             method: "POST",
+            credentials: "include",
             body: formData,
         });
         const form = await responseFormData.text();

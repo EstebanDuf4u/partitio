@@ -23,7 +23,7 @@ function Dashboard() {
 
     useEffect(() => {
         fetch(FETCH_BASE_URL + '/api/me', {
-            credentials: 'same-origin'
+            credentials: 'include'
         })
             .then(response => {
                 if (!response.ok) throw new Error()
@@ -39,8 +39,8 @@ function Dashboard() {
     }, [navigate]);
 
     useEffect(() => {
-        fetch(FETCH_BASE_URL + 'api/pieces', {
-            credentials: "same-origin"
+        fetch(FETCH_BASE_URL + '/api/pieces', {
+            credentials: "include"
         }).then(response => {
             if (!response.ok) throw new Error();
             return response.json();
@@ -53,7 +53,7 @@ function Dashboard() {
         });
 
         fetch(FETCH_BASE_URL + '/api/documents', {
-            credentials: "same-origin"
+            credentials: "include"
         }).then(response => {
             if (!response.ok) throw new Error();
             return response.json();

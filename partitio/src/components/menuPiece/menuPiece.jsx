@@ -11,7 +11,7 @@ function MenuPiece({ id }) {
     const handleClick = () => {
         fetch(FETCH_BASE_URL + '/api/pieces/' + id, {
             method: "DELETE",
-            credentials: "same-origin"
+            credentials: "include"
         }).then(response => {
             if (!response.ok) throw new Error();
             return response.json();
