@@ -20,7 +20,7 @@ function Piece() {
 
     useEffect(() => {
         fetch(FETCH_BASE_URL + '/api/me', {
-            credentials: 'same-origin'
+            credentials: 'include'
         })
             .then(response => {
                 if (!response.ok) throw new Error()
@@ -35,20 +35,15 @@ function Piece() {
             }))
     }, [navigate])
 
-
-    const loadPieces = () => {
-        fetch('api/pieces', {
-                credentials: "same-origin"
-            }).then(response => {
-                if (!response.ok) throw new Error();
-                return response.json();
-            }).then((data) => {
-                setPieces(data);
-            }).catch(() => setPieces([]));
-    }
-
     useEffect(() => {
-        loadPieces();
+        fetch(FETCH_BASE_URL + '/api/pieces', {
+            credentials: "include"
+        }).then(response => {
+            if (!response.ok) throw new Error();
+            return response.json();
+        }).then((data) => {
+            setPieces(data);
+        }).catch(() => setPieces([]));
     }, [])
 
     if (!user) return null

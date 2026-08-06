@@ -9,7 +9,7 @@ import MenuDashboard from "../../components/menuDashboard/menuDashboard";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Input } from '@mantine/core';
-import { MagnifyingGlassIcon, MusicNoteIcon, UsersIcon, FileTextIcon, PlusIcon } from '@phosphor-icons/react';
+import { MagnifyingGlassIcon, MusicNoteIcon, UsersIcon, FileTextIcon } from '@phosphor-icons/react';
 
 import FETCH_BASE_URL from '../../fetch_url';
 
@@ -18,12 +18,13 @@ function Dashboard() {
     const [user, setUser] = useState(null);
     const [pieces, setPieces] = useState([]);
     const [lastPieces, setLastPieces] = useState([]);
+    const [ensembles, setEnsembles] = useState([]);
     const [nbreDocuments, setNbreDocuments] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch(FETCH_BASE_URL + '/api/me', {
-            credentials: 'same-origin'
+            credentials: 'include'
         })
             .then(response => {
                 if (!response.ok) throw new Error()
@@ -39,8 +40,8 @@ function Dashboard() {
     }, [navigate]);
 
     useEffect(() => {
-        fetch(FETCH_BASE_URL + 'api/pieces', {
-            credentials: "same-origin"
+        fetch(FETCH_BASE_URL + '/api/pieces', {
+            credentials: "include"
         }).then(response => {
             if (!response.ok) throw new Error();
             return response.json();
@@ -53,15 +54,22 @@ function Dashboard() {
         });
 
         fetch(FETCH_BASE_URL + '/api/documents', {
-            credentials: "same-origin"
+            credentials: "include"
         }).then(response => {
             if (!response.ok) throw new Error();
             return response.json();
         }).then((data) => {
             setNbreDocuments(data.length);
         }).catch(() => setNbreDocuments(0));
-        const date = Date.now();
-        console.log(date);
+
+        fetch(FETCH_BASE_URL + '/api/ensembles', {
+            credentials: "include"
+        }).then(response => {
+            if (!response.ok) throw new Error();
+            return response.json();
+        }).then((data) => {
+            setEnsembles(data);
+        }).catch(() => setEnsembles([]));
 
     }, []);
 
@@ -82,7 +90,7 @@ function Dashboard() {
                 </div>
                 <div className="chiffreDiv">
                     <Nbre image={<MusicNoteIcon />} name="Morceaux" number={pieces.length} numberMonthly="3" link="/piece" color="green" />
-                    <Nbre image={<UsersIcon />} name="Ensemble" number="4" numberMonthly="null" link="/piece" color="orange" />
+                    <Nbre image={<UsersIcon />} name="Ensemble" number={ensembles.length} numberMonthly="null" link="/ensembles" color="orange" />
                     <Nbre image={<FileTextIcon />} name="Documents" number={nbreDocuments} numberMonthly="null" link="/piece" color="purple" />
                     {/* <Nbre image={} name="Commentaires" number="12" numberMonthly="null" link="/piece" color="blue" /> */}
                 </div>
@@ -100,17 +108,19 @@ function Dashboard() {
                     <div className="mesEnsembles">
                         <div className="mrTexte">
                             <p>Mes Ensembles</p>
-                            <Link to="#">Voir tout</Link>
+                            <Link to="/ensembles">Voir tout</Link>
                         </div>
                         <hr />
-                        <Ensemble name="Nom de l'ensemble" title="Titre de l'ensemble" path="null" color="green" />
-                        <hr />
-                        <Ensemble name="Nom de l'ensemble" title="Titre de l'ensemble" path="null" color="orange" />
-                        <hr />
-                        <Ensemble name="Nom de l'ensemble" title="Titre de l'ensemble" path="null" color="purple" />
-                        <hr />
-                        <Ensemble name="Nom de l'ensemble" title="Titre de l'ensemble" path="null" color="blue" />
-                        <hr />
+                        {ensembles.slice(0, 4).map((ensemble) => (
+                            <div key={ensemble.id}>
+                                <Ensemble
+                                    name={ensemble.name}
+                                    title={ensemble.type}
+                                    color={ensemble.color ?? "green"}
+                                />
+                                <hr />
+                            </div>
+                        ))}
                         <MenuDashboard />
                     </div>
                 </div>

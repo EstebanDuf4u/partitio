@@ -28,7 +28,7 @@ function Profil() {
 
     useEffect(() => {
         fetch(FETCH_BASE_URL + '/api/me', {
-            credentials: 'same-origin'
+            credentials: 'include'
         })
             .then(response => {
                 if (!response.ok) throw new Error()
@@ -86,6 +86,7 @@ function Profil() {
         formData.append("file", file);
         fetch('/api/uploads/profile-images', {
             method: "POST",
+            credentials: 'include',
             body: ImageformData,
         })
 
