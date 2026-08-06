@@ -1,7 +1,10 @@
 import "./homepage.scss" 
 
 import { FolderIcon, UsersIcon, MusicNoteIcon, ShieldCheckIcon } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
+
 function HomePage() {
+    const navigate = useNavigate();
     return(
         <div className="homepage">
             <div className="top">
@@ -10,14 +13,14 @@ function HomePage() {
                     <p>Partitio</p>
                 </div>
                 <div className="buttons">
-                    <button className="loginBtn">Se connecter</button>
-                    <button className="registerBtn">Créer un compte</button>
+                    <button className="loginBtn" onClick={() => navigate("/login")}>Se connecter</button>
+                    <button className="registerBtn" onClick={() => navigate("/signup")}>Créer un compte</button>
                 </div>
             </div>
             <div className="bottom">
                 <div className="hero">
                     <div className="leftText">
-                        <p className="topText">Gérez vos partiitions, jouez <span>ensemble.</span></p>
+                        <p className="topText">Gérez vos partitions, jouez <span>ensemble.</span></p>
                         <p>Partitio est un outil pour organiser vos partitions, collaborer avec vos ensembles et ne jamais perdre le fil de votre musique.</p>
                     </div>
                     <img src="/dashboard.png" alt="dashboard" />
