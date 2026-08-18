@@ -209,62 +209,84 @@ function Profil() {
                             )}
 
                             <div className="userIdentity">
-                                <div className="userName">
-                                    {isEditing ? (
-                                        <><label>Prénom</label>
-                                            <input className="userFirstNameInput"
-                                                type="text"
-                                                value={form.firstName}
-                                                placeholder="Prénom"
+                                {isEditing ? (
+                                    <>
+                                        <div className="userName">
+                                            <div className="profile-field">
+                                                <label htmlFor="firstName">Prénom</label>
+
+                                                <input
+                                                    id="firstName"
+                                                    className="userFirstNameInput"
+                                                    type="text"
+                                                    value={form.firstName}
+                                                    placeholder="Prénom"
+                                                    onChange={(event) =>
+                                                        setForm({
+                                                            ...form,
+                                                            firstName: event.target.value
+                                                        })
+                                                    }
+                                                />
+                                            </div>
+
+                                            <div className="profile-field">
+                                                <label htmlFor="lastName">Nom</label>
+
+                                                <input
+                                                    id="lastName"
+                                                    className="userLastNameInput"
+                                                    type="text"
+                                                    value={form.lastName}
+                                                    placeholder="Nom"
+                                                    onChange={(event) =>
+                                                        setForm({
+                                                            ...form,
+                                                            lastName: event.target.value
+                                                        })
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-field">
+                                            <label htmlFor="voiceSelect">
+                                                Choisissez un type de voix :
+                                            </label>
+
+                                            <select
+                                                name="voices"
+                                                id="voiceSelect"
+                                                value={form.voiceType}
                                                 onChange={(event) =>
                                                     setForm({
                                                         ...form,
-                                                        firstName: event.target.value
+                                                        voiceType: event.target.value
                                                     })
                                                 }
-                                            /></>
-                                    ) : (
-                                        <p className="userFirstName">{user?.firstName}</p>)}
-                                    {isEditing ? (
-                                        <><label>Nom</label>
-                                            <input className="userLastNameInput"
-                                                type="text"
-                                                value={form.lastName}
-                                                placeholder="Nom"
-                                                onChange={(event) => {
-                                                    setForm({ ...form, lastName: event.target.value });
-                                                    console.log(event.target.value);
-                                                }
-
-                                                }
-                                            /></>
-                                    ) : (
-                                        <p className="userLastName">{user?.lastName}</p>)}
-                                </div>
-                                {isEditing ? (
-                                    <>
-                                        <label htmlFor="voiceType">Choisissez un type de voix :</label>
-                                        <select name="voices" id="voiceSelect" value={form.voiceType}
-                                            onChange={(event) =>
-                                                setForm({
-                                                    ...form,
-                                                    voiceType: event.target.value
-                                                })
-                                            }
-                                        >
-                                            <option value="">--Veuillez choisir une option--</option>
-                                            <option value="soprano">Soprano</option>
-                                            <option value="alto">Alto</option>
-                                            <option value="tenor">Ténor</option>
-                                            <option value="basse">Basse</option>
-                                        </select>
+                                            >
+                                                <option value="">--Veuillez choisir une option--</option>
+                                                <option value="soprano">Soprano</option>
+                                                <option value="alto">Alto</option>
+                                                <option value="tenor">Ténor</option>
+                                                <option value="basse">Basse</option>
+                                            </select>
+                                        </div>
                                     </>
                                 ) : (
                                     <>
-                                        {user?.voiceType ? <Voice voice={user.voiceType} nbreVoice={1} /> : <Voice voice={"Soprano"} nbreVoice={1} />}
+                                        <div className="userName">
+                                            <p className="userFirstName">{user?.firstName}</p>
+                                            <p className="userLastName">{user?.lastName}</p>
+                                        </div>
+
+                                        {user?.voiceType ? (
+                                            <Voice voice={user.voiceType} nbreVoice={1} />
+                                        ) : (
+                                            <Voice voice="Soprano" nbreVoice={1} />
+                                        )}
                                     </>
                                 )}
-
                             </div>
 
                             <div className="userInformation">

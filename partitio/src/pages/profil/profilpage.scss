@@ -29,9 +29,11 @@ $danger: #c4362e;
 }
 
 .profil-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 150px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .userFirstNameInput,
@@ -138,6 +140,60 @@ $danger: #c4362e;
     background: $paper;
     box-shadow: 0 24px 80px rgba(15, 61, 49, 0.12);
     box-sizing: border-box;
+}
+
+.userName {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: min(100%, 490px);
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+        color: $green-950;
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+    }
+}
+
+.voice-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: min(100%, 240px);
+
+    label {
+        color: $green-950;
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        text-align: left;
+    }
+}
+
+#voiceSelect {
+    width: 100%;
+    min-height: 42px;
+    padding: 0 14px;
+    border: 2px solid #e5d7c6;
+    border-radius: 10px;
+    background-color: #fffaf2;
+    color: #17372f;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+
+    &:focus {
+        border-color: $green-800;
+        box-shadow: 0 0 0 3px rgba($green-800, 0.12);
+    }
 }
 
 .profil-intro {
@@ -372,7 +428,8 @@ p.userVoice {
 .profil-image-wrapper {
     position: relative;
     width: 150px;
-    height: 150px;
+    aspect-ratio: 1/1;
+    flex-shrink: 0;
     border-radius: 50%;
     overflow: hidden;
 }
