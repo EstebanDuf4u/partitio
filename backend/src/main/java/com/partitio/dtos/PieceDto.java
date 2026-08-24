@@ -1,5 +1,6 @@
 package com.partitio.dtos;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PieceDto {
@@ -10,9 +11,10 @@ public class PieceDto {
     private String language;
     private String description;
     private String coverUrl;
+    private LocalDateTime dateAdded;
     private List<DocumentDto> documentDtoList;
 
-    public PieceDto(long id, String title, String artist, String category, String language, String description, String coverUrl, List<DocumentDto> documentDtoList) {
+    public PieceDto(long id, String title, String artist, String category, String language, String description, String coverUrl, LocalDateTime dateAdded, List<DocumentDto> documentDtoList) {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -20,6 +22,7 @@ public class PieceDto {
         this.language = language;
         this.description = description;
         this.coverUrl = coverUrl;
+        this.dateAdded = dateAdded;
         this.documentDtoList = documentDtoList;
     }
 
@@ -78,6 +81,14 @@ public class PieceDto {
 
     public void setCoverUrl(String coverUrl) {
         this.coverUrl = coverUrl;
+    }
+
+    public LocalDateTime getDateAdded() {
+        return this.dateAdded;
+    }
+
+    public void setDateAdded(LocalDateTime dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
     public List<DocumentDto> getDocumentDto() {

@@ -41,13 +41,14 @@ $blue: #0f5ad7;
 
     padding: 20px;
 
-    height: 350px;
+    height: 250px;
     width: 350px;
 
     background-color: $paper;
     
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    scroll-snap-align: start; //Dit où l'élément doit se positionner quand le scroll se cale
+    scroll-snap-stop: always; //Dit au navigateur : "ne saute pas plusieurs points de snap d'un coup".
+
 
     hr {
         background-color: $green-800;
@@ -64,6 +65,8 @@ $blue: #0f5ad7;
 
     height: fit-content;
     width: fit-content;
+
+    cursor: pointer;
 
     img {
         height: 128px;

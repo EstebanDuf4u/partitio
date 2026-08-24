@@ -35,7 +35,7 @@ function Piece() {
             }))
     }, [navigate])
 
-    useEffect(() => {
+    const loadPieces = () => {
         fetch(FETCH_BASE_URL + '/api/pieces', {
             credentials: "include"
         }).then(response => {
@@ -44,7 +44,11 @@ function Piece() {
         }).then((data) => {
             setPieces(data);
         }).catch(() => setPieces([]));
-    }, [])
+    }
+
+    useEffect(() => {
+        loadPieces();
+    })
 
     if (!user) return null
 
@@ -52,22 +56,26 @@ function Piece() {
         <div className="all">
             <LeftPanel user={user} />
             <div className="rightPanel">
-                <div className="top">
-                    <div className="text">
-                        <p id="title">Morceaux</p>
-                        <p> Retrouvez tous les morceaux enregistrés dans la bibliothèque.</p>
+                <div className="topDisplay">
+                    <div className="top">
+                        <div className="text">
+                            <p id="title">Morceaux</p>
+                            <p> Retrouvez tous les morceaux enregistrés dans la bibliothèque.</p>
+                        </div>
+                    </div>
+                    <div className="researchPiece">
+                        <div className="recherche">
+                            <Input placeholder="Rechercher un morceau" leftSection={<MagnifyingGlassIcon size={32} />} />
+                        </div>
+                        <AddPieceButton onPieceAdded={loadPieces}/>
                     </div>
                 </div>
-                <div className="researchPiece">
-                    <div className="recherche">
-                        <Input placeholder="Rechercher un morceau" leftSection={<MagnifyingGlassIcon size={32} />} />
-                    </div>
-                    <AddPieceButton onPieceAdded={loadPieces}/>
-                </div>
-                <div className="cards">
-                    {/* {...pieces} permet de ne pas écrire :
-                    <Card coverSrc={morceau.coverSrc} title={morceau.title} artist={morceau.artist} voices={morceau.voices} modifDate={morceau.modifDate} /> */}
-                    {pieces.map((piece) => <Card key={`${piece.title}-${piece.artist}`} {...piece} onPieceDeleted={loadPieces} />)}
+                <div className="cardsDisplay">
+                    <div className="cards">
+                        {/* {...pieces} permet de ne pas écrire :
+                        <Card coverSrc={morceau.coverSrc} title={morceau.title} artist={morceau.artist} voices={morceau.voices} modifDate={morceau.modifDate} /> */}
+                        {pieces.map((piece) => <Card key={`${piece.title}-${piece.artist}`} {...piece} onPieceDeleted={loadPieces} onClick={() => navigate(`/piece/${piece.id}`)}/>)}
+                    </div>  
                 </div>
             </div>
         </div>

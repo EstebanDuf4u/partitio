@@ -19,8 +19,6 @@ $text: #17372f;
     .rightPanel {
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
-
         padding: 25px 50px;
 
         height: 100%;
@@ -90,24 +88,33 @@ $text: #17372f;
             }
         }
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(4, 350px);
-            grid-auto-rows: 350px;
+        .cardsDisplay {
+            flex: 1; //prend tout l'espace vertical disponible
 
-            gap: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            overflow-y: auto;
-            
-            /* Snap */
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
+            width: 100%;
+            min-height: 0;
 
-            overscroll-behavior: contain;
+            .cards {
+                display: grid;
 
-            height: calc(350px * 2 + 25px); // 2 lignes + l'espace entre elles
+                grid-template-columns: repeat(4, 350px);
+                grid-auto-rows: 250px;
+                gap: 25px;
 
-            align-content: start;
+                justify-content: center;
+
+                overflow-y: auto;
+
+                height: calc(250px * 2 + 25px);
+
+                scroll-snap-type: y mandatory; //Force le scroll vertical à s'arrêter sur certaines positions.
+                scroll-behavior: smooth; //Rend le défilement fluide au lieu d'être instantané.
+                overscroll-behavior: contain; //Empêche le scroll de ton .cards de se transmettre à la page entière
+            }
         }
     }
 }

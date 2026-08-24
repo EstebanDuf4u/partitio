@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+$green: #0f3d31;
+$border: #e8dccb;
+$cream: #f7f2ea;
+$paper: #fffaf2;
+$muted: #6f7b75;
+$text: #17372f;
+
+.piece-details {
+    width: 100%;
+    height: 100%;
+    padding: 40px 50px;
+
+    font-family: "Inter", sans-serif;
+    color: $text;
+
+    overflow-y: auto;
+}
+
+.piece-details__header {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+    max-width: 1200px;
+    margin: 0 auto;
+
+    padding: 30px;
+
+    background: $paper;
+    border: 2px solid $border;
+    border-radius: 15px;
+}
+
+.piece-details__cover {
+    width: 280px;
+    height: 280px;
+
+    object-fit: cover;
+
+    border: 1px solid $border;
+    border-radius: 10px;
+}
+
+.piece-details__info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.piece-details__category {
+    width: fit-content;
+    padding: 6px 12px;
+
+    background: $green;
+    color: $cream;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+}
+
+.piece-details__info h1 {
+    margin: 0;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 58px;
+}
+
+.piece-details__info h2 {
+    margin: 0;
+
+    font-size: 25px;
+    font-weight: 400;
+    color: $muted;
+}
+
+.piece-details__info p {
+    margin: 10px 0 0;
+
+    color: $muted;
+    line-height: 1.5;
+}
+
+.piece-details__metadata {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    max-width: 1200px;
+    margin: 25px auto 0;
+}
+
+.piece-details__metadata > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    padding: 20px;
+
+    background: $paper;
+    border: 2px solid $border;
+    border-radius: 12px;
+}
+
+.piece-details__metadata span {
+    color: $muted;
+    font-size: 13px;
+}
+
+.piece-details__metadata strong {
+    font-size: 18px;
+}
+
+.piece-details__files {
+    max-width: 1200px;
+    margin: 35px auto 0;
+}
+
+.piece-details__files h2 {
+    margin: 0 0 20px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 36px;
+}
+
+.piece-details__file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.piece-details__file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 20px;
+
+    background: $paper;
+    border: 2px solid $border;
+    border-radius: 12px;
+}
+
+.piece-details__file-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.piece-details__file-info strong {
+    display: block;
+}
+
+.piece-details__file-info span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+    color: $muted;
+}
+
+.piece-details__file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    background: $cream;
+    border-radius: 8px;
+}
+
+.piece-details__file-button {
+    padding: 9px 16px;
+
+    background: $green;
+    color: $cream;
+
+    border: 0;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.piece-details__file-button:disabled {
+    background: $border;
+    color: $muted;
+    cursor: not-allowed;
+}
+
+.piece-details__files-empty {
+    padding: 25px;
+
+    background: $paper;
+    border: 2px solid $border;
+    border-radius: 12px;
+
+    text-align: center;
+    color: $muted;
+}

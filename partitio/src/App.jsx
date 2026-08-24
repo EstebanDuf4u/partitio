@@ -8,6 +8,7 @@ import Ensemble from './pages/ensembles/ensembles.jsx'
 import Users from './pages/users/users.jsx'
 import Roles from './pages/roles/roles.jsx'
 import HomePage from './pages/homepage/homepage.jsx'
+import PieceDetails from './pages/pieceDetails/pieceDetails.jsx'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/ensembles" element={<Ensemble />}/>
         <Route path="/users" element={<Users />}/>
         <Route path="/roles" element={<Roles />}/>
+        <Route path="/piece/:id" element={<PieceDetails />}/>
       </Routes>
     </BrowserRouter>
   )

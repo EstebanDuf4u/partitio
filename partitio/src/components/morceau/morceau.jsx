@@ -28,7 +28,7 @@ function Morceau({ coverUrl, title, artist, documentDto }) {
                 </div>
             </div>
             <div className="droite">
-                <p>Modifié le : {lastDate ? lastDate.toLocaleDateString("fr-FR") : ""}</p>
+                <p>Ajouté le : {lastDate ? lastDate.toLocaleDateString("fr-FR") : ""}</p>
             </div>
         </div>
     )
