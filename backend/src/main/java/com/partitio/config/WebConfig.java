@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:5173",
                         "http://127.0.0.1:5173",
                         "http://localhost:8081",
+                        "https://51.255.34.164",
                         "http://127.0.0.1:8081")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
