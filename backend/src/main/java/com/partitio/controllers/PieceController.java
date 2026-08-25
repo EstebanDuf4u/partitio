@@ -1,5 +1,6 @@
 package com.partitio.controllers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,18 +47,22 @@ public class PieceController {
             PieceIdDto pieceIdDto = new PieceIdDto(piece.getId());
             List<Document> documentList = piece.getDocuments();
             List<DocumentDto> documentDtoList = documentList.stream().map(document -> new DocumentDto(document.getId(), document.getName(), document.getVoiceType(), document.getDocumentType(), document.getDateAdded(), document.getDateModified(), document.getDocumentUrl(), pieceIdDto)).collect(Collectors.toList());
-            PieceDto pieceDto = new PieceDto(piece.getId(), piece.getTitle(), piece.getArtist(), piece.getCategory(), piece.getLanguage(), piece.getDescription(), piece.getCoverUrl(), documentDtoList);
+            PieceDto pieceDto = new PieceDto(piece.getId(), piece.getTitle(), piece.getArtist(), piece.getCategory(), piece.getLanguage(), piece.getDescription(), piece.getCoverUrl(), piece.getDateAdded(), documentDtoList);
             return pieceDto;
         }).collect(Collectors.toList());
         return pieceDtoList;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Piece> getOne(@PathVariable long id) {
+    public ResponseEntity<PieceDto> getOne(@PathVariable long id) {
         Optional<Piece> optPiece = this.reposit.findById(id);
         if (optPiece.isPresent()) {
             Piece piece = optPiece.get();
-            return ResponseEntity.ok().body(piece);
+            PieceIdDto pieceIdDto = new PieceIdDto(piece.getId());
+            List<Document> documentList = piece.getDocuments();
+            List<DocumentDto> documentDtoList = documentList.stream().map(document -> new DocumentDto(document.getId(), document.getName(), document.getVoiceType(), document.getDocumentType(), document.getDateAdded(), document.getDateModified(), document.getDocumentUrl(), pieceIdDto)).collect(Collectors.toList());
+            PieceDto pieceDto = new PieceDto(piece.getId(), piece.getTitle(), piece.getArtist(), piece.getCategory(), piece.getLanguage(), piece.getDescription(), piece.getCoverUrl(), piece.getDateAdded(), documentDtoList);
+            return ResponseEntity.ok().body(pieceDto);
         }
         return ResponseEntity.notFound().build();
     }
@@ -65,6 +70,7 @@ public class PieceController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Piece create(@RequestParam String title, @RequestParam String artist, @RequestParam String category, @RequestParam String language, @RequestParam String description, @RequestParam String coverUrl) {
+        LocalDateTime localDate = LocalDateTime.now();
         Piece tempPiece = new Piece();
         tempPiece.setTitle(title);
         tempPiece.setArtist(artist);
@@ -72,6 +78,7 @@ public class PieceController {
         tempPiece.setLanguage(language);
         tempPiece.setDescription(description);
         tempPiece.setCoverUrl(coverUrl);
+        tempPiece.setDateAdded(localDate);
         return this.reposit.save(tempPiece);
     }
 

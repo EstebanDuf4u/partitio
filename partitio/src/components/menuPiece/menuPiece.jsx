@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import FETCH_BASE_URL from '../../fetch_url';
 
-function MenuPiece({ id }) {
+function MenuPiece({ id, onPieceDeleted }) {
     const [value, setValue] = useState(0);
     const handleClick = () => {
         fetch(FETCH_BASE_URL + '/api/pieces/' + id, {
@@ -14,10 +14,8 @@ function MenuPiece({ id }) {
             credentials: "include"
         }).then(response => {
             if (!response.ok) throw new Error();
-            return response.json();
-        }).then(res => console.log(res))
-            .catch(() => setValue(0));
-        window.location.reload();
+            onPieceDeleted();
+        }).catch(() => setValue(0));
     }
 
     return (

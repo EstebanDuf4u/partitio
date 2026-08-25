@@ -22,6 +22,8 @@ public interface EnsembleMemberRepository extends JpaRepository<EnsembleMember, 
 
     boolean existsByEnsemble_IdAndUser_Id(Long ensembleId, Long userId);
 
+    boolean existsByUser_IdAndStatusIn(Long userId, Collection<String> statuses);
+
     long countByEnsemble_IdAndStatusIn(Long ensembleId, Collection<String> statuses);
 
     long countByEnsemble_IdAndEnsembleRoleAndStatusIn(

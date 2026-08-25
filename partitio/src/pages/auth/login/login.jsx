@@ -6,7 +6,7 @@ import LeftPanel from '../../../components/leftPanel/leftPanel'
 import FETCH_BASE_URL from '../../../fetch_url'
 
 const initialForm = {
-    email: 'bob@gmail.co.uk',
+    email: 'bob@gmail.fr',
     password: 'azertyuiop',
 }
 
