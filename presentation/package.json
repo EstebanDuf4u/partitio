@@ -1,0 +1,14 @@
+{
+  "name": "partitio-presentation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.6.0",
+    "@slidev/theme-default": "^0.25.0"
+  }
+}
