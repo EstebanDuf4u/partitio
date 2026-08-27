@@ -1,62 +1,672 @@
+/* ==========================================================================
+   Partitio — thème "Clean Dark"
+   Sobre / moderne / professionnel
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+
+/* ==========================================================================
+   VARIABLES
+   ========================================================================== */
+
 :root {
-  --slidev-theme-primary: #7157f5;
-  --ink: #171526;
-  --muted: #6d6a7d;
-  --panel: #f6f5fb;
-  --line: #e5e2f0;
-  --purple: #7157f5;
-  --pink: #ef6c9b;
-  --teal: #1fa6a0;
+  --ink: #0f1115;
+
+  --panel: #171a21;
+  --panel-light: #1c2028;
+  --panel-hover: #20252e;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  --text: #f4f5f7;
+  --muted: #9ba2ad;
+  --muted-light: #c4c9d1;
+
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+
+  --secondary: #4fd1c5;
+  --secondary-soft: rgba(79, 209, 197, 0.10);
+
+  --green: #55c987;
+
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
 .slidev-layout {
-  background: #fff;
-  color: var(--ink);
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  box-sizing: border-box;
+
+  font-family: var(--font-body);
+
+  background: var(--ink);
+  color: var(--text);
+
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.slidev-layout *,
+.slidev-layout *::before,
+.slidev-layout *::after {
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   TYPOGRAPHIE
+   ========================================================================== */
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: var(--font-display);
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.slidev-layout h1 {
+  font-size: 2.35rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.slidev-layout h2 {
+  font-size: 1.55rem;
+  font-weight: 600;
+}
+
+.slidev-layout h3 {
+  font-size: 1rem;
+  font-weight: 600;
+
+  margin: 0 0 0.35rem;
+}
+
+.slidev-layout p {
+  color: var(--text);
+}
+
+.slidev-layout strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.slidev-layout ul {
+  padding-left: 1.1rem;
+}
+
+.slidev-layout ul li {
+  margin: 0.2rem 0;
+}
+
+.slidev-layout ul li::marker {
+  color: var(--accent);
+}
+
+
+/* ==========================================================================
+   CODE
+   ========================================================================== */
+
+.slidev-layout code {
+  font-family: var(--font-mono);
+
+  background: rgba(255, 255, 255, 0.06);
+  color: #8fb2ff;
+
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+
+  font-size: 0.86em;
+}
+
+.slidev-layout pre {
+  font-family: var(--font-mono);
+
+  background: #14171d !important;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.slidev-layout pre code {
+  background: transparent;
+  color: var(--text);
+}
+
+
+/* ==========================================================================
+   ACCESSIBILITÉ
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slidev-layout * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   EYEBROW
+   ========================================================================== */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+
+  font-family: var(--font-mono);
+
+  font-size: 0.66rem;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: var(--accent);
+
+  margin-bottom: 0.55rem;
+}
+
+.eyebrow::after {
+  content: '';
+
+  width: 55px;
+  height: 1px;
+
+  background: var(--border-strong);
+}
+
+
+/* ==========================================================================
+   SOUS-TITRES
+   ========================================================================== */
+
+.subtitle {
+  font-family: var(--font-body);
+
+  font-size: 1.05rem;
+  line-height: 1.55;
+
+  color: var(--muted);
+
+  max-width: 48ch;
+}
+
+.muted {
+  color: var(--muted);
+
+  font-size: 0.88rem;
+}
+
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+
+  background: var(--ink);
+  color: var(--text);
+}
+
+/* Ligne verticale discrète */
+
+.hero::before {
+  content: '';
+
+  position: absolute;
+
+  width: 1px;
+  height: 65%;
+
+  left: 7%;
+  top: 18%;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(91, 141, 239, 0.45),
+    transparent
+  );
+
+  opacity: 0.6;
+}
+
+
+/* Petit élément décoratif */
+
+.hero::after {
+  content: '';
+
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  right: -140px;
+  top: -140px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(91, 141, 239, 0.12);
+}
+
+
+/* ==========================================================================
+   HERO MARK
+   ========================================================================== */
+
+.hero-mark {
+  position: relative;
+
+  font-size: 3rem;
+  line-height: 1;
+
+  color: var(--accent);
+}
+
+.hero h1 {
+  position: relative;
+}
+
+.hero .subtitle {
+  position: relative;
+
+  color: var(--muted);
+}
+
+
+/* ==========================================================================
+   GRILLES
+   ========================================================================== */
+
+.grid2 {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 1rem;
+}
+
+.grid3 {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 0.85rem;
+}
+
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+
+.card {
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  padding: 1rem 1.15rem;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.card:hover {
+  background: var(--panel-light);
+
+  border-color: var(--border-strong);
+}
+
+.card p {
+  color: var(--muted);
+
+  font-size: 0.88rem;
+
+  margin: 0;
+}
+
+.card ul {
+  color: var(--muted);
+
+  font-size: 0.88rem;
+
+  margin: 0.25rem 0 0;
+}
+
+
+/* ==========================================================================
+   METRICS
+   ========================================================================== */
+
+.metric {
+  display: inline-block;
+
+  font-family: var(--font-mono);
+
+  font-weight: 600;
+
+  font-size: 0.72rem;
+
+  color: var(--accent);
+
+  background: var(--accent-soft);
+
+  border: 1px solid rgba(91, 141, 239, 0.22);
+
+  border-radius: 5px;
+
+  padding: 0.1em 0.5em;
+
+  margin-bottom: 0.45rem;
+}
+
+
+/* ==========================================================================
+   PILLS
+   ========================================================================== */
+
+.pill {
+  display: inline-block;
+
+  font-family: var(--font-mono);
+
+  font-size: 0.63rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.05em;
+
+  text-transform: uppercase;
+
+  background: var(--accent-soft);
+
+  color: #8fb2ff;
+
+  border: 1px solid rgba(91, 141, 239, 0.22);
+
+  border-radius: 999px;
+
+  padding: 0.26em 0.75em;
+}
+
+
+/* ==========================================================================
+   CHECK
+   ========================================================================== */
+
+.check {
+  color: var(--green);
+
+  font-weight: 700;
+
   font-size: 1.05rem;
 }
 
-h1, h2, h3 { letter-spacing: -.035em; }
-h1 { font-size: 2.8rem; line-height: 1.05; font-weight: 800; }
-h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1.3rem; }
-h3 { font-size: 1.15rem; font-weight: 750; }
-p, li { line-height: 1.45; }
-strong { color: var(--purple); }
 
-.eyebrow { color: var(--purple); font-size: .74rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.subtitle { color: var(--muted); font-size: 1.3rem; }
-.muted { color: var(--muted); }
-.small { font-size: .82rem; }
-.accent { color: var(--purple); }
+/* ==========================================================================
+   FEATURE CARD
+   ========================================================================== */
 
-.hero { background: radial-gradient(circle at 90% 10%, #eeeaff 0, transparent 28%), linear-gradient(135deg, #171526 0%, #272044 55%, #7157f5 140%); color: white; }
-.hero h1, .hero strong { color: white; }
-.hero .eyebrow, .hero .subtitle { color: #d9d4ff; }
-.hero-mark { width: 88px; height: 88px; display: grid; place-items: center; border-radius: 28px; background: linear-gradient(135deg, #fb9ab9, #7357f5); font-size: 3rem; box-shadow: 0 14px 45px #09061666; }
+.feature-card {
+  background: var(--panel);
 
-.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
-.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .85rem; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 1rem 1.15rem; }
-.card h3 { margin: 0 0 .4rem; }
-.card p { margin: 0; color: var(--muted); }
-.card ul { margin: .4rem 0 0; padding-left: 1.1rem; }
-.metric { font-size: 2.1rem; font-weight: 850; color: var(--purple); line-height: 1; }
+  border: 1px solid var(--border);
 
-.flow { display: flex; align-items: center; justify-content: space-between; gap: .45rem; margin-top: 1.6rem; }
-.node { flex: 1; min-height: 72px; display: grid; place-items: center; text-align: center; padding: .55rem; border: 1px solid var(--line); border-radius: 14px; background: white; font-weight: 700; }
-.node.hot { background: #f0edff; color: #4d37bd; border-color: #c9c1ff; }
-.arrow { color: var(--purple); font-weight: 900; }
-.mockup { border: 9px solid #242033; border-radius: 22px; overflow: hidden; background: white; box-shadow: 0 14px 35px #2a24561a; }
-.mockup-top { height: 25px; background: #242033; display: flex; gap: 5px; align-items: center; padding: 0 10px; }
-.mockup-top i { width: 7px; height: 7px; border-radius: 50%; background: #f19abb; }
-.mockup-body { padding: 1rem; }
-.mockup-nav { color: white; background: #292440; padding: .65rem 1rem; font-weight: 800; }
-.piece-row { display: flex; align-items: center; gap: .7rem; padding: .55rem 0; border-bottom: 1px solid var(--line); }
-.cover { width: 38px; height: 38px; border-radius: 9px; background: linear-gradient(135deg, #7157f5, #ef6c9b); }
-.pill { display: inline-block; border-radius: 99px; padding: .2rem .55rem; color: #5642c5; background: #ebe7ff; font-size: .72rem; font-weight: 750; }
-.check { color: var(--teal); font-weight: 800; }
-.warn { color: #c05532; font-weight: 800; }
-pre { font-size: .67rem !important; line-height: 1.32 !important; }
-.slidev-code { border-radius: 13px; }
+  border-radius: 10px;
 
-.footer { position: absolute; bottom: 1.2rem; right: 1.6rem; color: #9893a9; font-size: .7rem; }
+  padding: 1.1rem 1.25rem;
+}
+
+.feature-card-content p {
+  color: var(--muted);
+
+  font-size: 0.88rem;
+
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   SCREENSHOTS / MOCKUPS
+   ========================================================================== */
+
+.mockup,
+.screenshot-frame {
+  background: #13161b;
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  padding: 7px;
+}
+
+.mockup img,
+.screenshot-frame img {
+  display: block;
+
+  width: 100%;
+
+  border-radius: 6px;
+
+  border: 1px solid var(--border);
+}
+
+.screenshot-frame .app-screen-small {
+  max-height: 38vh;
+
+  object-fit: cover;
+
+  object-position: top;
+}
+
+.screenshot-label {
+  margin-top: 0.5rem;
+
+  font-family: var(--font-mono);
+
+  font-size: 0.63rem;
+
+  letter-spacing: 0.05em;
+
+  text-transform: uppercase;
+
+  color: var(--muted);
+
+  text-align: center;
+}
+
+
+/* ==========================================================================
+   FLOW
+   ========================================================================== */
+
+.flow {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.45rem;
+
+  margin: 1.1rem 0;
+}
+
+.node {
+  font-family: var(--font-mono);
+
+  font-size: 0.74rem;
+
+  text-align: center;
+
+  line-height: 1.25;
+
+  color: var(--text);
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 7px;
+
+  padding: 0.5em 0.85em;
+}
+
+.node.hot {
+  background: var(--accent);
+
+  border-color: var(--accent);
+
+  color: white;
+
+  font-weight: 600;
+}
+
+.arrow {
+  font-family: var(--font-mono);
+
+  font-size: 0.68rem;
+
+  color: var(--muted);
+
+  white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   COULEURS UTILITAIRES
+   ========================================================================== */
+
+.text-brass,
+.text-purple-100 {
+  color: var(--accent) !important;
+}
+
+.text-ink,
+.text-slate-900 {
+  color: var(--text) !important;
+}
+
+
+/* ==========================================================================
+   ESPACEMENTS — COMPRESSION POUR 16:9
+   ========================================================================== */
+
+.slidev-layout [class~="mt-2"] {
+  margin-top: 0.4rem !important;
+}
+
+.slidev-layout [class~="mt-3"] {
+  margin-top: 0.55rem !important;
+}
+
+.slidev-layout [class~="!mt-3"] {
+  margin-top: 0.4rem !important;
+}
+
+.slidev-layout [class~="mt-4"] {
+  margin-top: 0.65rem !important;
+}
+
+.slidev-layout [class~="mt-5"] {
+  margin-top: 0.8rem !important;
+}
+
+.slidev-layout [class~="mt-6"] {
+  margin-top: 0.95rem !important;
+}
+
+.slidev-layout [class~="mt-7"] {
+  margin-top: 1.05rem !important;
+}
+
+.slidev-layout [class~="mt-8"] {
+  margin-top: 1.2rem !important;
+}
+
+.slidev-layout [class~="mt-9"] {
+  margin-top: 1.3rem !important;
+}
+
+.slidev-layout [class~="mt-10"] {
+  margin-top: 1.4rem !important;
+}
+
+.slidev-layout [class~="mt-12"] {
+  margin-top: 1.6rem !important;
+}
+
+.slidev-layout [class~="p-12"] {
+  padding: 1.75rem !important;
+}
+
+.slidev-layout [class~="-m-12"] {
+  margin: -1.75rem !important;
+}
+
+.slidev-layout [class~="!text-6xl"] {
+  font-size: 2.6rem !important;
+}
+
+.slidev-layout [class~="!text-5xl"] {
+  font-size: 2.2rem !important;
+}
+
+.slidev-layout [class~="text-xl"] {
+  font-size: 1.05rem !important;
+}
+
+
+/* ==========================================================================
+   H-FULL
+   ========================================================================== */
+
+.slidev-layout[class~="h-full"] {
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 720px) {
+
+  .grid2,
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+
+  .slidev-layout h1 {
+    font-size: 1.8rem;
+  }
+}
