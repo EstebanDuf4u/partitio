@@ -294,7 +294,7 @@ flowchart LR
 
 # Cas d'utilisation - Admin d'ensemble
 
-```mermaid {theme: 'neutral', scale: 0.53}
+```mermaid {theme: 'neutral', scale: 0.50}
 flowchart LR
     A((Admin ensemble)) --> E[Ensembles]
     A --> D[Documents]
